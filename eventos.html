@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eventos · Aniimo Guia de Campo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260925">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main id="app"><div class="loading">Carregando…</div></main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260925"></script>
+<script>
+(async () => {
+  try {
+    const [ev, meta, dex, sis] = await Promise.all([A.load("eventos"), A.load("meta"), A.load("aniimo"), A.load("sistemas")]);
+    A.setTypes(sis); A.nav(ev.atualizado);
+    const amap = A.byName(dex.aniimo), E = sis.elementos, esc = A.esc, H = ev.holo;
+
+    const starter = (els) => {
+      const m = A.multVs("Luz", els);
+      if (m > 1) return `<span class="pill live">super efetivo · 1,6×</span>`;
+      if (m < 1) return `<span class="pill" style="color:var(--bad)">resistido · evite</span>`;
+      return `<span class="pill">neutro · +30% do trait (1,3×)</span>`;
+    };
+    const alphaCard = (a) => {
+      const weak = A.weakTo(a.el, E), res = A.resists(a.el, E);
+      const plans = a.cores.map((k, i) => `<h4 style="margin:14px 0 0">${i ? "Plano B" : "Plano A"} — ${A.chip(k)}</h4>${A.teamHTML(k, meta, amap, {flex: i === 0})}`).join("");
+      return `<div class="card ${a.ativo ? "hl" : ""}" id="${esc(a.nome)}" style="margin-bottom:14px">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0;font-size:1.3rem">${esc(a.nome)} ${A.chips(a.el)}</h3>${a.ativo ? `<span class="pill live">na rotação agora</span>` : `<span class="pill">rotação</span>`}</div>
+        <div class="kv" style="margin-top:12px">
+          <b>Leve</b><div class="row">${A.chips(weak)}</div>
+          <b>Evite</b><div class="row">${A.chips(res) || "—"}</div>
+          <b>Starters</b><div>${starter(a.el)}</div>
+          <b>Tank do squad</b><div><a href="${A.dexLink(a.tank)}">${esc(a.tank)}</a> ${amap[a.tank] ? A.chips(amap[a.tank].el) : ""}</div>
+        </div>
+        ${a.nota ? `<p class="muted" style="margin-top:10px">${esc(a.nota)}</p>` : ""}
+        ${plans}
+      </div>`;
+    };
+
+    const active = H.alphas.filter(a => a.ativo), rot = H.alphas.filter(a => !a.ativo);
+    const egg = ev.eggheist, sim = ev.sim;
+    const cal = [...ev.calendario].sort((a,b) => (a.inicio||"0000").localeCompare(b.inicio||"0000"));
+    const stTag = (c) => { if (!c.inicio && !c.fim) return `<span class="pill">sempre</span>`; const s = A.status(c); return s==="live" ? `<span class="pill live">ativo</span>` : s==="soon" ? `<span class="pill soon">em breve</span>` : `<span class="pill">encerrado</span>`; };
+
+    const eggTeam = `<div class="team"><div class="slot main"><div class="lab">Main</div><a class="nm" href="${A.dexLink(egg.time.main)}">${esc(egg.time.main)}</a>${A.chips(amap[egg.time.main].el)}<div class="alt">Alt: ${egg.time.alt.map(a => `<a href="${A.dexLink(a)}">${esc(a)}</a>`).join(", ")}</div></div>` +
+      egg.time.supports.map(s => `<div class="slot"><div class="lab">Support</div><a class="nm" href="${A.dexLink(s)}">${esc(s)}</a>${A.chips(amap[s].el)}</div>`).join("") + `</div>`;
+
+    document.getElementById("app").innerHTML = `
+      <section class="hero"><div class="kicker">Eventos e modos</div><h1>Eventos</h1>
+        <p class="lead">Como funciona cada modo, o que levar contra cada boss e o calendário do que está aberto.</p></section>
+      <nav class="sub"><a href="#holo">Holo-Battle Interlink</a><a href="#egg">Egg Heist</a><a href="#sim">Holo-Battle Sim</a><a href="#calendario">Calendário</a><a href="#fontes">Fontes</a></nav>
+
+      <section id="holo">
+        <h2>${esc(H.nome)} · ${esc(H.temporada)}</h2>
+        <p class="muted">${A.fmtD(H.inicio)} – ${A.fmtD(H.fim)} · ${esc(H.janela)} · Requisito: ${esc(H.requisito)}</p>
+        <div class="grid g2">
+          <div class="card"><h3>Como funciona</h3><ul class="tick">${H.formato.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>
+          <div class="card"><h3>Regras de ouro</h3><ul class="tick">${H.regras_ouro.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>
+        </div>
+        <h3 style="margin-top:24px">Modificadores da temporada</h3>
+        <div class="grid g2">${H.modificadores.map(m => `<div class="card"><h3>${esc(m.nome)}</h3><p>${esc(m.efeito)}</p><p class="muted" style="margin:0"><b style="color:var(--acc)">Como usar:</b> ${esc(m.como)}</p></div>`).join("")}</div>
+        <div class="note ok" style="margin-top:14px"><b>O que decide a lane:</b> BREAK Pursuit paga combo × 300% do ATK do Aniimo <i>ativo</i>. Dentro da janela, spamme as skills mais baratas; quando o BREAK acabar, o maior ATK precisa estar em campo.</div>
+
+        <h3 style="margin-top:28px">Alphas na rotação agora</h3>
+        ${active.map(alphaCard).join("")}
+        <h3 style="margin-top:28px">Resto da rotação (prontos para quando entrarem)</h3>
+        ${rot.map(alphaCard).join("")}
+        <p class="dim">Fora da rotação no momento: ${H.fora_rotacao.map(esc).join(", ")}.</p>
+        <div class="note info"><b>Sobre os elementos:</b> ${esc(H.fonte_nota)}</div>
+      </section>
+
+      <section id="egg">
+        <h2>${esc(egg.nome)}</h2>
+        <p class="lead">${esc(egg.resumo)}</p>
+        <p class="muted"><b>Requisito:</b> ${esc(egg.requisito)}</p>
+        <div class="card hl"><h3>Time recomendado</h3>${eggTeam}<p class="muted">${esc(egg.time.porque)}</p></div>
+        <div class="card" style="margin-top:14px"><h3>Regras que decidem a run</h3><ul class="tick">${egg.dicas.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
+      </section>
+
+      <section id="sim">
+        <h2>${esc(sim.nome)}</h2>
+        <p class="lead">${esc(sim.resumo)}</p>
+        <div class="tw"><table><thead><tr><th>Estilo de treino</th><th>Efeito</th></tr></thead><tbody>${sim.estilos.map(s => `<tr><td><b>${esc(s.nome)}</b></td><td>${esc(s.efeito)}</td></tr>`).join("")}</tbody></table></div>
+        <ul class="tick" style="margin-top:12px">${sim.dicas.map(d => `<li>${esc(d)}</li>`).join("")}</ul>
+      </section>
+
+      <section id="calendario">
+        <h2>Calendário</h2>
+        <div class="tw"><table><thead><tr><th>Evento</th><th>Tipo</th><th>Período</th><th>Status</th><th>Nota</th></tr></thead><tbody>
+          ${cal.map(c => `<tr><td><b>${c.link ? `<a href="${c.link}">${esc(c.nome)}</a>` : esc(c.nome)}</b></td><td>${esc(c.tipo)}</td><td style="white-space:nowrap">${c.inicio ? A.fmtD(c.inicio) : "—"}${c.fim ? " – " + A.fmtD(c.fim) : ""}</td><td>${stTag(c)}</td><td class="muted">${esc(c.nota)}</td></tr>`).join("")}
+        </tbody></table></div>
+      </section>
+
+      <section id="fontes">
+        <h2>Fontes</h2>
+        <ul class="tick">${ev.fontes.map(f => `<li><a href="${f.url}" target="_blank" rel="noopener">${esc(f.nome)}</a></li>`).join("")}</ul>
+      </section>`;
+
+    if (location.hash) { const t = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t) setTimeout(() => t.scrollIntoView(), 50); }
+  } catch (e) { A.fail(e); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aniimo · Guia de Campo</title>
+<meta name="description" content="Guia de Aniimo: eventos da semana, times por boss, meta de endgame, Aniidex completo e sistemas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260925">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main id="app"><div class="loading">Carregando…</div></main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260925"></script>
+<script>
+(async () => {
+  try {
+    const [ev, meta, dex, sis] = await Promise.all([A.load("eventos"), A.load("meta"), A.load("aniimo"), A.load("sistemas")]);
+    A.setTypes(sis); A.nav(ev.atualizado);
+    const amap = A.byName(dex.aniimo), E = sis.elementos, esc = A.esc;
+
+    const cal = ev.calendario.filter(c => c.inicio || c.fim);
+    const live = cal.filter(c => A.status(c) === "live").sort((a,b) => (a.fim||"9999").localeCompare(b.fim||"9999"));
+    const t = A.today(), in14 = new Date(t); in14.setDate(t.getDate()+14);
+    const soon = cal.filter(c => A.status(c) === "soon" && A.parse(c.inicio) <= in14).sort((a,b) => a.inicio.localeCompare(b.inicio));
+    const evRow = (c, tag) => `<li><div class="row" style="justify-content:space-between"><b>${c.link ? `<a href="${c.link}">${esc(c.nome)}</a>` : esc(c.nome)}</b>${tag}</div>
+      <div class="dim" style="font-size:.84rem">${c.inicio ? A.fmtD(c.inicio) : ""}${c.fim ? " – " + A.fmtD(c.fim) : c.inicio ? " em diante" : ""} · ${esc(c.tipo)}</div>
+      ${c.nota ? `<div class="muted" style="font-size:.88rem">${esc(c.nota)}</div>` : ""}</li>`;
+
+    const alphas = ev.holo.alphas.filter(a => a.ativo);
+    const aCard = (a) => {
+      const weak = A.weakTo(a.el, E), c = meta.cores[a.cores[0]];
+      return `<a class="card" href="eventos.html#${encodeURIComponent(a.nome)}">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">${esc(a.nome)}</h3>${A.chips(a.el)}</div>
+        <p class="dim" style="font-size:.8rem;margin:.6em 0 .2em">LEVE</p><div class="row">${A.chips(weak)}</div>
+        <p class="dim" style="font-size:.8rem;margin:.8em 0 .2em">MAIN</p>
+        <div style="font-family:var(--fh);font-size:1.15rem;font-weight:700">${esc(c.main)} <span class="dim" style="font-size:.85rem">+ ${c.supports.map(esc).join(", ")}</span></div>
+      </a>`;
+    };
+
+    const vein = live.find(c => c.regiao);
+    const veinMons = vein ? dex.aniimo.filter(a => a.prismana && a.prismana.startsWith(vein.regiao)) : [];
+
+    document.getElementById("app").innerHTML = `
+      <section class="hero">
+        <div class="kicker">Guia pessoal · atualizado toda quinta</div>
+        <h1>Aniimo · Guia de Campo</h1>
+        <p class="lead">O que está rolando no jogo agora, qual time levar em cada boss, o meta de endgame e o Aniidex completo, com os dados conferidos contra a tabela de tipos.</p>
+      </section>
+
+      <section>
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h2>Holo-Battle Interlink desta semana</h2><a href="eventos.html#holo">plano completo →</a></div>
+        <p class="muted">${esc(ev.holo.temporada)} · ${A.fmtD(ev.holo.inicio)} – ${A.fmtD(ev.holo.fim)} · ${esc(ev.holo.janela)}</p>
+        <div class="grid g3">${alphas.map(aCard).join("")}</div>
+        <div class="note" style="margin-top:14px"><b>Não esqueça:</b> as recompensas só fecham quando você sai do modo. Saia antes do reset de segunda.</div>
+      </section>
+
+      ${vein ? `<section><h2>Prismana da semana</h2>
+        <div class="card hl"><div class="row" style="justify-content:space-between"><b>${esc(vein.nome)}</b><span class="pill pr">até ${A.fmtD(vein.fim)}</span></div>
+        <p class="muted">Formas Prismana que aparecem nessa região:</p>
+        <div class="row">${veinMons.map(m => `<a class="pill" href="${A.dexLink(m.nome)}">${esc(m.nome)}</a>`).join(" ") || "—"}</div></div></section>` : ""}
+
+      <section class="grid g2">
+        <div class="card"><h2>Ativo agora</h2><ul class="clean">${live.map(c => evRow(c, `<span class="pill live">ativo</span>`)).join("")}</ul></div>
+        <div class="card"><h2>Próximos 14 dias</h2><ul class="clean">${soon.length ? soon.map(c => evRow(c, `<span class="pill soon">${A.fmtD(c.inicio)}</span>`)).join("") : `<li class="dim">Nada novo previsto.</li>`}</ul>
+          <p style="margin-top:10px"><a href="eventos.html#calendario">calendário completo →</a></p></div>
+      </section>
+
+      <section>
+        <h2>Atalhos</h2>
+        <div class="grid g4">
+          <a class="card" href="meta.html"><h3>Meta de endgame</h3><p class="muted">Times por elemento, supports universais e tier list.</p></a>
+          <a class="card" href="eventos.html#egg"><h3>Egg Heist</h3><p class="muted">Time e regras para extrair sem perder o gear.</p></a>
+          <a class="card" href="aniidex.html"><h3>Aniidex</h3><p class="muted">${dex.aniimo.length} Aniimo com stats, trait, skills e evolução.</p></a>
+          <a class="card" href="sistemas.html"><h3>Sistemas</h3><p class="muted">Tipos, Potential, personalidades, Prismana e evoluções.</p></a>
+        </div>
+      </section>
+
+      <section>
+        <h2>Últimas atualizações</h2>
+        ${ev.changelog.slice(0,4).map(c => `<div class="card" style="margin-bottom:10px"><b>${A.fmtD(c.data)}</b><ul class="tick">${c.itens.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+      </section>`;
+  } catch (e) { A.fail(e); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sistemas · Aniimo Guia de Campo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260925">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main id="app"><div class="loading">Carregando…</div></main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260925"></script>
+<script>
+(async () => {
+  try {
+    const [sis, dex] = await Promise.all([A.load("sistemas"), A.load("aniimo")]);
+    A.setTypes(sis); A.nav(sis.atualizado);
+    const esc = A.esc, E = sis.elementos, P = sis.potential, PE = sis.personalidade, PR = sis.prismana;
+
+    const cell = (a, d) => { const m = A.mult(a, d); return m > 1 ? `<td class="sup">1,6</td>` : m < 1 ? `<td class="res">0,6</td>` : `<td class="neu">·</td>`; };
+    const matrix = `<div class="tw"><table class="mx"><thead><tr><th class="rh">Ataque ↓ / Defesa →</th>${E.map(e => `<th>${A.chip(e)}</th>`).join("")}</tr></thead><tbody>
+      ${E.map(a => `<tr><th class="rh">${A.chip(a)}</th>${E.map(d => cell(a, d)).join("")}</tr>`).join("")}</tbody></table></div>`;
+
+    const prList = dex.aniimo.filter(a => a.prismana);
+    const byReg = {}; prList.forEach(a => { const r = a.prismana.replace(/ \(.*\)$/, ""); (byReg[r] ||= []).push(a); });
+
+    const evos = [...new Set(dex.aniimo.map(a => a.evo).filter(Boolean))].sort();
+    const evoHTML = evos.map(s => {
+      const linked = s.replace(/[A-Z][a-z]+/g, w => dex.aniimo.some(a => a.nome === w) ? `<a href="${A.dexLink(w)}">${w}</a>` : w);
+      const fork = s.includes(" / ");
+      return `<li>${fork ? `<span class="pill" style="margin-right:6px">bifurca</span>` : ""}${linked}</li>`;
+    }).join("");
+
+    document.getElementById("app").innerHTML = `
+      <section class="hero"><div class="kicker">Mecânicas</div><h1>Sistemas</h1>
+        <p class="lead">Tudo o que muda como você monta e investe: tipos, papéis, BREAK, Potential, personalidade, Prismana e evoluções.</p></section>
+      <nav class="sub"><a href="#tipos">Tipos</a><a href="#papeis">Papéis</a><a href="#break">BREAK</a><a href="#potential">Potential</a><a href="#personalidade">Personalidade</a><a href="#prismana">Prismana</a><a href="#evolucoes">Evoluções</a><a href="#starters">Starters</a></nav>
+
+      <section id="tipos"><h2>Tabela de tipos</h2>
+        <p class="muted">${esc(sis.tipos.nota)} Contra Aniimo de dois elementos, os multiplicadores se multiplicam.</p>
+        ${matrix}</section>
+
+      <section id="papeis"><h2>Papéis</h2>
+        <div class="grid g3">${sis.papeis.map(p => `<div class="card"><h3>${A.role(p.nome)}</h3><p class="muted">${esc(p.desc)}</p><p style="margin:0;font-size:.88rem"><b style="color:var(--acc)">Awakening:</b> ${esc(p.awakening)}</p></div>`).join("")}</div>
+        <div class="card" style="margin-top:14px"><h3>Formato Twine</h3><ul class="tick">${sis.twine.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div></section>
+
+      <section id="break"><h2>BREAK</h2><div class="card"><ul class="tick">${sis.break.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div></section>
+
+      <section id="potential"><h2>Potential e grau de captura</h2>
+        <div class="grid g2">
+          <div class="card"><h3>Graus na captura</h3><div class="tw"><table><thead><tr><th>Grau</th><th>Chance</th></tr></thead><tbody>${P.graus.map(g => `<tr><td><b>${esc(g.nome)}</b></td><td>${esc(g.chance)}</td></tr>`).join("")}</tbody></table></div>
+            <ul class="tick" style="margin-top:12px">${P.regras.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>
+          <div class="card"><h3>Como melhorar depois</h3><ul class="clean">${P.melhorias.map(m => `<li><b>${esc(m.nome)}</b><div class="muted" style="font-size:.9rem">${esc(m.desc)}</div></li>`).join("")}</ul></div>
+        </div></section>
+
+      <section id="personalidade"><h2>Personalidade</h2>
+        <ul class="tick">${PE.regras.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+        <div class="tw" style="margin-top:12px"><table><thead><tr><th>Polo A</th><th>Efeito</th><th>Polo B</th><th>Efeito</th></tr></thead><tbody>
+          ${PE.eixos.map(x => `<tr><td><b>${x.a.letra} · ${esc(x.a.nome)}</b></td><td class="muted">${esc(x.a.efeito)}</td><td><b>${x.b.letra} · ${esc(x.b.nome)}</b></td><td class="muted">${esc(x.b.efeito)}</td></tr>`).join("")}</tbody></table></div>
+        <h3 style="margin-top:18px">Recomendado por papel</h3>
+        <div class="tw"><table><thead><tr><th>Papel</th><th>Personalidade</th><th>Prioridade</th></tr></thead><tbody>${PE.por_papel.map(p => `<tr><td><b>${esc(p.papel)}</b></td><td><code>${esc(p.rec)}</code></td><td class="muted">${esc(p.prio)}</td></tr>`).join("")}</tbody></table></div></section>
+
+      <section id="prismana"><h2>Prismana</h2>
+        <p class="lead">${esc(PR.o_que)}</p>
+        <div class="grid g3">${PR.como.map(c => `<div class="card"><h3>${esc(c.nome)}</h3><p class="muted" style="margin:0">${esc(c.desc)}</p></div>`).join("")}</div>
+        <div class="note">${esc(PR.cuidado)}</div>
+        <h3 style="margin-top:18px">Formas Prismana por região (${prList.length})</h3>
+        <div class="tw"><table><thead><tr><th>Região / origem</th><th>Aniimo</th></tr></thead><tbody>
+          ${Object.entries(byReg).map(([r, l]) => `<tr><td><b>${esc(r)}</b></td><td>${l.map(a => `<a href="${A.dexLink(a.nome)}">${esc(a.nome)}</a> ${A.chips(a.el)}`).join(" &nbsp; ")}</td></tr>`).join("")}
+          <tr><td><b>Só por chocagem</b></td><td class="muted">Sparkelf, Rapier (fora do Aniidex numerado)</td></tr>
+        </tbody></table></div></section>
+
+      <section id="evolucoes"><h2>Linhas de evolução</h2>
+        <p class="muted">Bifurcações são permanentes: um Aniimo que vira um lado nunca vira o outro. Para ter os dois, crie duas cópias.</p>
+        <div class="card"><ul class="clean">${evoHTML}</ul></div></section>
+
+      <section id="starters"><h2>Por que todo mundo usa Lunara e Helion</h2>
+        <div class="card hl"><p>${esc(sis.starters.resumo)}</p><p class="muted" style="margin:0">${esc(sis.starters.conta)}</p></div></section>`;
+
+    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(() => t.scrollIntoView(), 50); }
+  } catch (e) { A.fail(e); }
+})();
+</script>
+</body>
+</html>

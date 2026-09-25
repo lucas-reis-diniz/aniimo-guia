@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meta · Aniimo Guia de Campo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260925">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main id="app"><div class="loading">Carregando…</div></main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260925"></script>
+<script>
+(async () => {
+  try {
+    const [meta, dex, sis] = await Promise.all([A.load("meta"), A.load("aniimo"), A.load("sistemas")]);
+    A.setTypes(sis); A.nav(meta.atualizado);
+    const amap = A.byName(dex.aniimo), esc = A.esc;
+    const ORDER = {"SS":0,"S+":0,"S":1,"A":2,"B":3,"C":4,"D":5};
+    const score = (a) => Math.min(ORDER[a.tier.ath] ?? 9, ORDER[a.tier.mob] ?? 9) + ((ORDER[a.tier.ath] ?? 9) + (ORDER[a.tier.mob] ?? 9)) / 100;
+    const ranked = dex.aniimo.filter(a => a.final && (a.tier.ath || a.tier.mob)).sort((a,b) => score(a) - score(b));
+
+    const coreCard = (k) => `<div class="card" id="core-${esc(k)}"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Time ${A.chip(k)}</h3><span class="dim" style="font-size:.8rem">tank: ${meta.cores[k].tank.map(t => `<a href="${A.dexLink(t)}">${esc(t)}</a>`).join(", ") || "—"}</span></div>${A.teamHTML(k, meta, amap)}</div>`;
+
+    document.getElementById("app").innerHTML = `
+      <section class="hero"><div class="kicker">Endgame e composição</div><h1>Meta</h1>
+        <p class="lead">Como montar time no formato Twine, um time pronto por elemento e a tier list cruzando duas fontes.</p></section>
+      <nav class="sub"><a href="#principios">Princípios</a><a href="#twine">Formato Twine</a><a href="#universais">Supports universais</a><a href="#times">Times por elemento</a><a href="#tier">Tier list</a><a href="#build">Build por papel</a></nav>
+
+      <section id="principios"><h2>Princípios</h2>
+        <div class="grid g3">${meta.principios.map(p => `<div class="card"><h3>${esc(p.titulo)}</h3><p class="muted" style="margin:0">${esc(p.texto)}</p></div>`).join("")}</div></section>
+
+      <section id="twine"><h2>Formato Twine: 1 main + 3 supports</h2>
+        <div class="card"><ul class="tick">${sis.twine.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div></section>
+
+      <section id="universais"><h2>Supports universais</h2>
+        <div class="grid g4">${meta.universais.map(u => `<div class="card"><h3><a href="${A.dexLink(u.nome)}">${esc(u.nome)}</a></h3><div class="row" style="margin-bottom:6px">${A.chips(amap[u.nome].el)} ${A.role(amap[u.nome].papel)}</div><p class="muted" style="margin:0;font-size:.9rem">${esc(u.porque)}</p></div>`).join("")}</div></section>
+
+      <section id="times"><h2>Times de endgame por elemento</h2>
+        <p class="muted">Escolha o time pelo elemento que o boss toma super efetivo. Cada time traz main, três supports e o Break que serve de tank em raid.</p>
+        <div class="card hl" style="margin-bottom:14px"><h3>Ordem de prioridade para montar</h3><ul class="clean">${meta.endgame.map(e => `<li><a href="#core-${esc(e.core)}"><b>${esc(e.nome)}</b></a> <span class="muted">— ${esc(e.nota)}</span></li>`).join("")}</ul></div>
+        <div class="grid g2">${Object.keys(meta.cores).map(coreCard).join("")}</div></section>
+
+      <section id="tier"><h2>Tier list (formas finais)</h2>
+        <p class="muted">Duas fontes lado a lado: <a href="https://allthings.how/aniimo-1-0-tier-list/" target="_blank" rel="noopener">All Things How 1.0</a> e <a href="https://mobalytics.gg/gamebase/guides/aniimo-tier-list" target="_blank" rel="noopener">Mobalytics</a>. Quando concordam, é aposta segura.</p>
+        <div class="bar"><div class="tg" id="rf">${["Todos","DPS","Break","Suporte","Cura","Regen"].map((r,i) => `<button data-r="${r}" class="${i?"":"on"}">${r}</button>`).join("")}</div></div>
+        <div class="tw"><table><thead><tr><th>Aniimo</th><th>Elemento</th><th>Papel</th><th class="tc">ATH</th><th class="tc">Mobalytics</th><th>Nota</th></tr></thead><tbody id="tb"></tbody></table></div></section>
+
+      <section id="build"><h2>Build por papel</h2>
+        <div class="grid g2">
+          <div class="card"><h3>Personalidade</h3><p class="muted" style="font-size:.88rem">Rerolável alimentando. Detalhes em <a href="sistemas.html#personalidade">Sistemas</a>.</p>
+            <ul class="clean">${sis.personalidade.por_papel.map(p => `<li><b>${esc(p.papel)}</b> — <code>${esc(p.rec)}</code><div class="muted" style="font-size:.86rem">${esc(p.prio)}</div></li>`).join("")}</ul></div>
+          <div class="card"><h3>Capability Awakening</h3><p class="muted" style="font-size:.88rem">Leve um stat a 20/20 antes de encostar no próximo.</p>
+            <ul class="clean">${sis.papeis.map(p => `<li>${A.role(p.nome)} <b style="margin-left:6px">${esc(p.awakening)}</b></li>`).join("")}</ul></div>
+        </div></section>`;
+
+    const tb = document.getElementById("tb");
+    const draw = (r) => { tb.innerHTML = ranked.filter(a => r === "Todos" || a.papel === r).map(a => `<tr><td><a href="${A.dexLink(a.nome)}"><b>${esc(a.nome)}</b></a></td><td>${A.chips(a.el)}</td><td>${A.role(a.papel)}</td><td class="tc">${A.tier(a.tier.ath,"All Things How") || '<span class="dim">—</span>'}</td><td class="tc">${A.tier(a.tier.mob,"Mobalytics") || '<span class="dim">—</span>'}</td><td class="muted" style="font-size:.85rem">${esc(a.nota)}</td></tr>`).join(""); };
+    draw("Todos");
+    document.getElementById("rf").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; document.querySelectorAll("#rf button").forEach(x => x.classList.toggle("on", x === b)); draw(b.dataset.r); });
+    if (location.hash) { const t = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t) setTimeout(() => t.scrollIntoView(), 50); }
+  } catch (e) { A.fail(e); }
+})();
+</script>
+</body>
+</html>

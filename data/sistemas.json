@@ -1,0 +1,92 @@
+{
+ "atualizado": "2026-09-25",
+ "elementos": ["Fogo", "Água", "Grama", "Vento", "Terra", "Gelo", "Elétrico", "Sombrio", "Luz"],
+ "tipos": {
+  "multiplicadores": {"super": 1.6, "neutro": 1.0, "resistido": 0.625},
+  "ataque": {
+   "Fogo":     {"super": ["Grama", "Gelo"],                "resistido": ["Fogo", "Água", "Terra", "Luz"]},
+   "Água":     {"super": ["Fogo", "Terra"],                "resistido": ["Água", "Grama", "Gelo", "Luz"]},
+   "Grama":    {"super": ["Água", "Terra"],                "resistido": ["Fogo", "Grama", "Luz"]},
+   "Vento":    {"super": ["Grama", "Sombrio"],             "resistido": ["Elétrico", "Vento"]},
+   "Terra":    {"super": ["Fogo", "Gelo"],                 "resistido": ["Água", "Grama", "Terra", "Sombrio"]},
+   "Gelo":     {"super": ["Água", "Elétrico"],             "resistido": ["Fogo", "Gelo", "Terra"]},
+   "Elétrico": {"super": ["Água", "Vento"],                "resistido": ["Elétrico", "Gelo", "Terra"]},
+   "Sombrio":  {"super": ["Grama", "Elétrico", "Luz"],     "resistido": ["Água", "Vento"]},
+   "Luz":      {"super": ["Vento", "Sombrio"],             "resistido": ["Elétrico", "Luz"]}
+  },
+  "nota": "Só existem três multiplicadores: 1,6× (super efetivo), 1× e 0,625× (resistido). Não há imunidade."
+ },
+ "papeis": [
+  {"nome": "DPS", "desc": "Causa o dano. No formato Twine é quase sempre o main.", "awakening": "ATK até o teto → HP"},
+  {"nome": "Break", "desc": "Quebra a barra de postura do inimigo e abre a janela de dano. Em raids, só Break pode tankar e os Alphas focam o tank.", "awakening": "BREAK até o teto → HP → P.DEF"},
+  {"nome": "Suporte", "desc": "Buffs, debuffs de resistência e controle. No formato Twine entra, usa uma skill e sai.", "awakening": "HP → REGEN (os stats importam pouco fora de campo)"},
+  {"nome": "Cura", "desc": "Recupera HP. A maioria escala com o HP máximo do próprio healer.", "awakening": "HP até o teto → REGEN → M.DEF"},
+  {"nome": "Regen", "desc": "Devolve EP (energia) ao time. EP é o que limita quantas skills cabem na janela de BREAK.", "awakening": "REGEN → HP"}
+ ],
+ "twine": [
+  "O time tem 4 Aniimo e trava quando o encontro começa.",
+  "Você fica Twined (transformado) no main: é o único cujo kit completo, stats e rotação importam.",
+  "Os outros 3 são supports: você troca, eles usam uma skill e voltam para o main. Valem pelo efeito dessa skill, não pelos stats.",
+  "Por isso todo o Star Dust vai para o main. Nos supports, só nível suficiente para liberar a skill.",
+  "Supports com efeito fora de campo (Gracewing cura do banco) ou skill grátis ao entrar (Dazmand) rendem mais nesse formato."
+ ],
+ "break": [
+  "Todo inimigo grande tem uma barra de postura (escudo). Dano de BREAK esvazia essa barra.",
+  "Quando a barra zera, o inimigo entra em BREAK: fica vulnerável e é a janela onde sai a maior parte do dano.",
+  "BREAK também aumenta a chance de captura em Aniimo selvagens.",
+  "Time sem fonte de BREAK desperdiça dano: sempre tenha um main ou support que quebre."
+ ],
+ "potential": {
+  "graus": [
+   {"nome": "Common", "chance": "66%"},
+   {"nome": "Good", "chance": "26%"},
+   {"nome": "Elite", "chance": "7,2%"},
+   {"nome": "Perfect", "chance": "0,8% (≈1 em 125)"}
+  ],
+  "regras": [
+   "Cada um dos 6 stats (HP, ATK, P.DEF, REGEN, M.DEF, BREAK) tem Potential próprio, até 20 pontos.",
+   "Cada ponto = +4% naquele stat e +6 de CP. Com 20/20 o stat fica 80% acima da base.",
+   "O CP sobe igual em qualquer stat, então dá para inflar CP investindo em stat inútil. Ignore o CP, siga o papel.",
+   "O grau é só um resumo. Um Elite com os pontos nos stats certos do papel bate um Perfect mal distribuído."
+  ],
+  "melhorias": [
+   {"nome": "Capability Awakening", "desc": "Sobe o Potential adquirido gastando Star Dust."},
+   {"nome": "Capafruit", "desc": "+1 de Potential inato nos 6 stats. Uma vez por Aniimo: guarde para o main."},
+   {"nome": "Inheritance", "desc": "Transfere nível e materiais para uma cópia melhor da mesma família. Investir agora nunca é desperdício."},
+   {"nome": "Breeding", "desc": "Escolhe até 4 Potentials inatos herdados dos pais."}
+  ]
+ },
+ "personalidade": {
+  "regras": [
+   "Quatro eixos no estilo MBTI; cada polo aumenta um stat em +3% / +6% / +10% (Somewhat / Relatively / Very).",
+   "É rerolável alimentando o Aniimo: não perca captura caçando personalidade.",
+   "Algumas evoluções exigem personalidade: Geoclaw pede Tenacious (T); Melloblum pede Faithful (F)."
+  ],
+  "eixos": [
+   {"a": {"letra": "E", "nome": "Energetic", "efeito": "P.ATK; +2% ATK e +2% BREAK"}, "b": {"letra": "I", "nome": "Instinctive", "efeito": "M.ATK; +4% REGEN"}},
+   {"a": {"letra": "S", "nome": "Practical", "efeito": "+4% de dano"}, "b": {"letra": "N", "nome": "Nimble", "efeito": "+5% de taxa crítica"}},
+   {"a": {"letra": "T", "nome": "Tenacious", "efeito": "+6% P.DEF"}, "b": {"letra": "F", "nome": "Faithful", "efeito": "+6% M.DEF"}},
+   {"a": {"letra": "J", "nome": "Judicious", "efeito": "+4% HP"}, "b": {"letra": "P", "nome": "Playful", "efeito": "Gusto (energia); +4% de redução de dano"}}
+  ],
+  "por_papel": [
+   {"papel": "DPS físico", "rec": "E · S · (T/F) · P", "prio": "E > S. Troque S por N se o kit depende de crítico."},
+   {"papel": "DPS mágico", "rec": "I · S · (T/F) · P", "prio": "I > S."},
+   {"papel": "Break", "rec": "E · N · T · J", "prio": "E pelo +2% de BREAK; N se o trait liga com críticos (ex.: Blazen)."},
+   {"papel": "Suporte", "rec": "I · (qualquer) · F · P", "prio": "I > P. Dano não importa."},
+   {"papel": "Cura", "rec": "I · (qualquer) · F · J", "prio": "J > I. Cura escala com HP máximo."}
+  ]
+ },
+ "prismana": {
+  "o_que": "Variantes raras em cores de arco-íris, mais fortes que a forma normal (o quanto não é publicado). Aparecem quando o clima Prismana Flow ativa na região.",
+  "como": [
+   {"nome": "Rota Nurture (grátis)", "desc": "Consiga o Bronze Badge, gaste 30 Lumin Amber na Branch da região para liberar o Nurturing e capture durante Group Appearances. Com a Prismatic Energy em Full, o Prismana Flow é garantido."},
+   {"nome": "Rota Crystal (paga)", "desc": "Com o Silver Badge, use Ecosystem Intervention e alimente um Prismana Crystal para disparar o Prismana Flow na hora (até 3 por dia)."},
+   {"nome": "Chocagem", "desc": "Estátuas de Weekend Prayer e ovos Prismana garantem forma Prismana ao chocar."}
+  ],
+  "cuidado": "Não há confirmação de que a forma Prismana sobreviva à evolução. O caminho seguro é capturar já no estágio que você vai usar."
+ },
+ "starters": {
+  "resumo": "Lunara e Helion ganham +30% de dano final quando NÃO atacam com elemento vantajoso. Luz só é super efetiva contra Vento e Sombrio, então o bônus liga quase sempre.",
+  "conta": "Com vantagem real, um especialista bate 1,6× contra o 1,3× do starter. Sem vantagem nenhuma disponível, o starter ganha. Some a isso a melhor economia de EP do jogo (skills que devolvem 20 EP) e o +15% permanente da ultimate."
+ }
+}

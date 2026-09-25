@@ -1,0 +1,70 @@
+{
+ "atualizado": "2026-09-25",
+ "principios": [
+  {"titulo": "Todo o investimento vai no main", "texto": "No formato Twine só o main fica em campo. Star Dust, Capafruit e Potential Perfect vão nele. Supports precisam só de nível para liberar a skill."},
+  {"titulo": "Economia de EP decide o dano", "texto": "EP é quantas skills cabem na janela de BREAK. Regen, redução de custo e skills que devolvem EP valem mais que power bruto por golpe."},
+  {"titulo": "Sempre tenha BREAK", "texto": "O grosso do dano sai com o inimigo em BREAK. Dano sem quebra de postura é dano desperdiçado."},
+  {"titulo": "Vantagem elemental é 1,6×", "texto": "Super efetivo multiplica por 1,6 e resistido por 0,625. Escolher o main pelo elemento do boss é a maior decisão da luta."},
+  {"titulo": "2 universais + 1 do elemento", "texto": "Gracewing (cura do banco) e Somniwing (EP) encaixam em qualquer time. O terceiro slot é o buffer do elemento do main."}
+ ],
+ "universais": [
+  {"nome": "Gracewing", "porque": "Cura fora de campo: no banco, cura os aliados quando eles usam skills e ultimates. +20% de cura e ultimate de 30% do HP do time."},
+  {"nome": "Somniwing", "porque": "Aumenta o EP máximo e gera energia para qualquer composição. S+/SS nas duas tier lists."},
+  {"nome": "Eklue", "porque": "Weakness Mark facilita crítico, Arc Strike atordoa e o debuff reduz resistência. Pouco setup."},
+  {"nome": "Dazmand", "porque": "A primeira skill em até 5s após entrar é grátis: encaixa exatamente no swap de support."}
+ ],
+ "cores": {
+  "Elétrico": {
+   "main": "Fulmintis", "alt": ["Fenmane"], "supports": ["Luminelle", "Dazmand", "Gracewing"], "flex": ["Besauce", "Somniwing"],
+   "porque": "Fulmintis devolve 4 EP a cada crítico de skill. Luminelle aumenta dano e eficiência de BREAK dos Elétricos; Dazmand sobe a taxa crítica Elétrica e entra de graça. Crítico vira EP, EP vira mais skills.",
+   "tank": ["Blazen"]
+  },
+  "Grama": {
+   "main": "Irisalis", "alt": ["Thornblade"], "supports": ["Melloblum", "Leafy", "Somniwing"], "flex": ["Gracewing"],
+   "porque": "Irisalis tem ATK 130, skill 50% mais barata a cada 9 stacks e auto-revive. Melloblum transforma crítico de Grama em motor (até +70% de dano crítico); Leafy cura 15% e dá +15% de dano de Grama.",
+   "tank": ["Pomawk", "Tuckin"]
+  },
+  "Sombrio": {
+   "main": "Pawney", "alt": ["Stellarys", "Ignitis"], "supports": ["Fragrancier", "Dreaple", "Gracewing"], "flex": ["Somniwing"],
+   "porque": "Ironclad Armament dá +30% de dano contra alvos em BREAK por 15s. Fragrancier corta 25% da resistência Sombria e Dreaple mais 17% no Nightmare, além de buffar dano Sombrio.",
+   "tank": ["Rookey", "Inferlupa"]
+  },
+  "Fogo": {
+   "main": "Infergon", "alt": ["Scorchhowl"], "supports": ["Flamerion", "Somniwing", "Gracewing"], "flex": [],
+   "porque": "Hot Breath aplica 8 stacks de Queimadura e o trait dá +30% contra alvos com 5+: o bônus liga sozinho. Flamerion reduz a resistência a Fogo em até 20%.",
+   "tank": ["Inferlupa", "Magmarex"]
+  },
+  "Água": {
+   "main": "Gachapus", "alt": ["Sherro"], "supports": ["Erlath", "Piopiota", "Glacy"], "flex": ["Gracewing"],
+   "porque": "Erlath e Piopiota aumentam o dano de Água do time; Glacy cura e dá +15% de dano com o Glimmer Shot.",
+   "tank": ["Panpanta"]
+  },
+  "Gelo": {
+   "main": "Malevsera", "alt": ["Glynsera"], "supports": ["Glacy", "Somniwing", "Gracewing"], "flex": ["Eklue"],
+   "porque": "Malevsera é S-tier e fica mais forte conforme a vida cai: precisa de cura garantida. Poucos buffers de Gelo, então os universais fecham o time.",
+   "tank": ["Wavwal", "Geoclaw"]
+  },
+  "Terra": {
+   "main": "Grizbo", "alt": ["Waleetle"], "supports": ["Bailite", "Coraliz", "Gracewing"], "flex": ["Somniwing"],
+   "porque": "Rock Smash pula o setup e já entra Enfurecido. Bailite reduz a resistência a Terra (até 10 stacks); Coraliz recarrega 30 EP e recompensa times de Terra.",
+   "tank": ["Minespine", "Magmarex"]
+  },
+  "Vento": {
+   "main": "Cornet", "alt": [], "supports": ["Tromber", "Eklue", "Gracewing"], "flex": ["Somniwing"],
+   "porque": "DPS de Vento é o elo fraco do jogo (Cornet é B). Tromber dá +25% de dano de Vento, reduz resistência e corta 18% do custo de EP; Eklue soma dano de Vento ao debuffar.",
+   "tank": ["Tubster", "Helgon"]
+  },
+  "Luz": {
+   "main": "Lunara", "alt": ["Helion"], "supports": ["Somniwing", "Gracewing", "Eklue"], "flex": ["Dazmand"],
+   "porque": "O time sem pensar: +30% de dano quando não há vantagem, skills que devolvem 20 EP e +15% permanente após a ultimate. Serve em quase tudo.",
+   "tank": []
+  }
+ },
+ "endgame": [
+  {"nome": "Elétrico (topo absoluto)", "core": "Elétrico", "nota": "Considerado o melhor DPS do jogo. Primeiro time a montar."},
+  {"nome": "Grama crítico", "core": "Grama", "nota": "Maior teto de dano e o mais seguro por causa do auto-revive."},
+  {"nome": "Sombrio de BREAK", "core": "Sombrio", "nota": "Melhor em chefes com janela de BREAK longa."},
+  {"nome": "Terra direto", "core": "Terra", "nota": "Burst sem setup; bom para quem não quer gerenciar stacks."},
+  {"nome": "Luz universal", "core": "Luz", "nota": "Quando você não sabe o elemento do boss ou não tem o especialista."}
+ ]
+}

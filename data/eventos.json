@@ -1,0 +1,119 @@
+{
+ "atualizado": "2026-09-25",
+ "holo": {
+  "nome": "Holo-Battle Interlink",
+  "temporada": "Season 3",
+  "inicio": "2026-09-24",
+  "fim": "2026-12-06",
+  "janela": "Semanal: quinta 04:00 até segunda 03:59 (horário do servidor)",
+  "requisito": "Trailblazer I",
+  "formato": [
+   "Squad de 4 jogadores, ou você com 3 IAs. Cada jogador leva 1 main + 3 supports (formato Twine).",
+   "Três lanes simultâneas, uma Alpha por lane. Cada lane guarda seu melhor rank de estrelas separadamente; a soma das três libera os marcos.",
+   "Só Aniimo do tipo BREAK podem tankar, e os Alphas atacam o tank primeiro. Em squad, um jogador deve ir de main Break.",
+   "Estrelas vêm do dano causado. Em 9☆ o Alpha entra em Enraged; acima disso vai até 9☆+6. Eliminação completa vale 2.500 pontos.",
+   "O líder do squad escolhe buffs aleatórios na preparação."
+  ],
+  "regras_ouro": [
+   "As recompensas só fecham quando você SAI do modo. Saia antes do reset de segunda.",
+   "Vitória com o Lucky Aniimo da semana dá +10.000 Credits. Confira qual é antes de montar.",
+   "Ajudar outros (Assist Gifts) paga fora do limite semanal de Stamps.",
+   "Top 100 de cada um dos 4 rankings recebe recompensa por correio (faixas 1-2, 3-10, 11-30, 31-100)."
+  ],
+  "modificadores": [
+   {"nome": "Cold Snap", "efeito": "Dano de Gelo aplica debuff: +2,5% de vulnerabilidade a BREAK do Alpha por stack.", "como": "Main ou tank de Gelo (Geoclaw gera stacks sozinho) acelera a janela de BREAK."},
+   {"nome": "Volt Surge", "efeito": "Dano Elétrico dá aos aliados potencializados +25% de taxa crítica e +60% de dano crítico (1× a cada 20s).", "como": "Luminelle ou Dazmand entrando como support disparam o buff para o main."},
+   {"nome": "Reversal Strike", "efeito": "Contra-atacar dá +50% de regen natural de energia e +25% de dano por 15s.", "como": "Segure o contra em vez de esquivar. Thornblade e Helgon têm contra no kit."},
+   {"nome": "BREAK Pursuit", "efeito": "Skills durante o BREAK acumulam combo. Ao fim do BREAK, dano bônus = combo × 300% do ATK do Aniimo ativo.", "como": "Spam das skills MAIS BARATAS na janela e deixe o maior ATK ativo quando o BREAK acabar. Pawney (+30% em alvos em BREAK) e Irisalis (skills baratas) são os melhores."}
+  ],
+  "alphas": [
+   {"nome": "Alpha Irisal", "el": ["Grama"], "ativo": true, "cores": ["Sombrio", "Fogo"], "tank": "Inferlupa", "nota": "Inferlupa (Fogo/Sombrio) acerta super efetivo com os dois elementos. Pawney e Infergon são os mains."},
+   {"nome": "Alpha Tubster", "el": ["Vento"], "ativo": true, "cores": ["Elétrico", "Luz"], "tank": "Blazen", "nota": "Lane perfeita para o Volt Surge. Lunara e Helion acertam 1,6× aqui."},
+   {"nome": "Alpha Bouldus", "el": ["Terra"], "ativo": true, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Irisalis é a resposta. Evite Fogo, Elétrico, Gelo e Terra, todos resistidos."},
+   {"nome": "Alpha Minespine", "el": ["Terra"], "ativo": false, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Mesmo plano do Bouldus."},
+   {"nome": "Alpha Grizbo", "el": ["Terra"], "ativo": false, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Mesmo plano do Bouldus."},
+   {"nome": "Alpha Luminelle", "el": ["Elétrico"], "ativo": false, "cores": ["Sombrio", "Gelo"], "tank": "Rookey", "nota": "Starters são resistidos aqui (Luz). Reaproveite o time Sombrio do Irisal."},
+   {"nome": "Alpha Blazen", "el": ["Elétrico"], "ativo": false, "cores": ["Sombrio", "Gelo"], "tank": "Rookey", "nota": "Mesmo plano da Alpha Luminelle."},
+   {"nome": "Alpha Scorchhowl", "el": ["Fogo"], "ativo": false, "cores": ["Terra", "Água"], "tank": "Minespine", "nota": "Grizbo é o main mais direto."},
+   {"nome": "Omega Sherro", "el": ["Água"], "ativo": false, "cores": ["Elétrico", "Grama"], "tank": "Blazen", "nota": "Fraco a três elementos. Reaproveite Elétrico ou Grama."}
+  ],
+  "fora_rotacao": ["Alpha Geoclaw (Gelo)", "Alpha Panpanta (Água)", "Alpha Tuckin (Grama)"],
+  "fonte_nota": "A fonte lista cada Alpha com 'counters X'. Cruzando com a tabela de tipos, X são exatamente os elementos super efetivos contra o Alpha em 9 de 9 casos, ou seja: leve X."
+ },
+ "eggheist": {
+  "nome": "Operation: Egg Heist",
+  "resumo": "Modo PvPvE nas Lost Isles: junte suprimentos, invada a área proibida, pegue ovos raros e extraia. Prêmio maior: Giant Darkler Egg (chance de Aniimo em forma Darkler).",
+  "requisito": "Veteran Pathfinder. Chaos Mode (desde 24/09): Elite Egg Seeker IV, mais ovos Prismana e Secret Collectibles ultra-raros.",
+  "time": {"main": "Irisalis", "alt": ["Grizbo"], "supports": ["Gracewing", "Glacy", "Magmarex"], "porque": "Se você desmaia, perde amplifier, unit e mochila. O auto-revive da Irisalis é seguro contra isso. Gracewing cura do banco, Glacy cura 10% na hora e Magmarex (Fogo/Terra) quebra obstáculos e cobre pilares elementais."},
+  "dicas": [
+   "Confira o roster salvo do Egg Heist antes de entrar: é separado do time de exploração.",
+   "Leve healer sempre e use a cura no cooldown, sem esperar vida baixa.",
+   "Varie os elementos: pilares dentro do Sanctum só respondem ao elemento correspondente.",
+   "Gear barato no Normal (Experimental, 5.000 Eggshell Coins). Só suba para Hard/Nightmare quando puder repor o que perder.",
+   "Farme a praia primeiro, limpe a sala inteira antes de abrir baú e marque a saída no mapa antes de pegar ovo.",
+   "Para evacuar basta entregar um ovo ou juntar Eggshell Coins suficientes. Todos saem limpos = espólio dividido; evacuação falha = cada um fica só com o seu.",
+   "Talentos: priorize Egg Boat Safe e capacidade de carga acima de stats."
+  ]
+ },
+ "sim": {
+  "nome": "Holo-Battle Sim",
+  "resumo": "Modo solo roguelike por elemento (hoje: Grama, Água, Fogo), com dificuldades Easy, Normal, Hard e Challenge. Libera após a Promotion Assessment do nível 45.",
+  "estilos": [
+   {"nome": "Energy", "efeito": "Aumenta dano de skill básica; transforma em Irisal."},
+   {"nome": "Surge", "efeito": "Aumenta dano de ultimate; transforma em Bolty."},
+   {"nome": "Valor", "efeito": "Mais dano conforme toma dano; 500 moedas iniciais."},
+   {"nome": "Vitality", "efeito": "Buff ao receber cura; 250 moedas."},
+   {"nome": "Ironclad", "efeito": "Aumenta defesa; 250 moedas."},
+   {"nome": "Wealth", "efeito": "Usa Training Coins para atacar; 1.000 moedas."},
+   {"nome": "Random", "efeito": "Sorteia um dos outros; 1.000 moedas."}
+  ],
+  "dicas": [
+   "Gizmos são buffs passivos da run; o estilo escolhido puxa os Gizmos do mesmo tipo.",
+   "First Clear libera uma vez por temporada em cada dificuldade.",
+   "Training Incentives resetam semanalmente e limpar a dificuldade mais alta concede as recompensas das menores."
+  ]
+ },
+ "calendario": [
+  {"nome": "Holo-Battle Interlink — Season 3", "tipo": "Semanal", "inicio": "2026-09-24", "fim": "2026-12-06", "nota": "Quinta a segunda. Alphas ativos: Irisal, Tubster, Bouldus.", "link": "eventos.html#holo"},
+  {"nome": "Egg Heist — Chaos Mode", "tipo": "Modo", "inicio": "2026-09-24", "fim": null, "nota": "Dificuldade máxima, mais ovos Prismana. Exige Elite Egg Seeker IV.", "link": "eventos.html#egg"},
+  {"nome": "Operation: Egg Heist", "tipo": "Contínuo", "inicio": "2026-09-19", "fim": null, "nota": "Modo PvPvE permanente.", "link": "eventos.html#egg"},
+  {"nome": "Legendary Journey — estágio Irisalis", "tipo": "História", "inicio": "2026-09-25", "fim": "2026-12-09", "nota": "Junte Irisalis Petals (limite semanal) para o Aniipod lendário: captura garantida, Potential Perfect e Sparkling.", "link": "aniidex.html#Irisalis"},
+  {"nome": "Aniimo Discovery — Dazmand", "tipo": "Limitado", "inicio": "2026-09-25", "fim": "2026-10-08", "nota": "Rastreie o novo support Elétrico. Dazmand é peça do time Elétrico.", "link": "aniidex.html#Dazmand"},
+  {"nome": "Glamour Star (Floral Soirée)", "tipo": "Rotativo", "inicio": "2026-09-25", "fim": "2026-10-01", "nota": "Vista Aniimo com acessórios temáticos para pontuar. Volta 09–15/10 e 23–29/10.", "link": null},
+  {"nome": "Glamour Star", "tipo": "Rotativo", "inicio": "2026-10-09", "fim": "2026-10-15", "nota": "", "link": null},
+  {"nome": "Glamour Star", "tipo": "Rotativo", "inicio": "2026-10-23", "fim": "2026-10-29", "nota": "", "link": null},
+  {"nome": "Vein Abundance — Beast Fang Ridge", "tipo": "Prismana", "inicio": "2026-09-21", "fim": "2026-09-27", "nota": "Região com Prismana de Scorchhowl, Iris e Glynsera.", "regiao": "Beast Fang Ridge", "link": "sistemas.html#prismana"},
+  {"nome": "Vein Abundance — Rosetower Woods", "tipo": "Prismana", "inicio": "2026-09-28", "fim": "2026-10-04", "nota": "Região com Prismana de Grizbo.", "regiao": "Rosetower Woods", "link": "sistemas.html#prismana"},
+  {"nome": "Vein Abundance — Berylline Causeway", "tipo": "Prismana", "inicio": "2026-10-05", "fim": "2026-10-11", "nota": "Região com Prismana de Irisal (caminho para Irisalis Prismana).", "regiao": "Berylline Causeway", "link": "sistemas.html#prismana"},
+  {"nome": "Vein Abundance — Nimbus Fields", "tipo": "Prismana", "inicio": "2026-10-12", "fim": "2026-10-18", "nota": "Região com Prismana de Turbo.", "regiao": "Nimbus Fields", "link": "sistemas.html#prismana"},
+  {"nome": "Vein Abundance — Prismana Carnival", "tipo": "Prismana", "inicio": "2026-10-19", "fim": "2026-10-25", "nota": "Encerramento do ciclo.", "link": "sistemas.html#prismana"},
+  {"nome": "Who's That Aniimo?", "tipo": "Rotativo", "inicio": "2026-10-02", "fim": "2026-10-08", "nota": "Volta 16–22/10 e 30/10–05/11.", "link": null},
+  {"nome": "Who's That Aniimo?", "tipo": "Rotativo", "inicio": "2026-10-16", "fim": "2026-10-22", "nota": "", "link": null},
+  {"nome": "Who's That Aniimo?", "tipo": "Rotativo", "inicio": "2026-10-30", "fim": "2026-11-05", "nota": "", "link": null},
+  {"nome": "Tracing the Trail: The Shadow of Legend", "tipo": "História", "inicio": "2026-09-20", "fim": "2026-12-09", "nota": "", "link": null},
+  {"nome": "Journey Handbook", "tipo": "Temporada", "inicio": "2026-09-16", "fim": "2026-10-28", "nota": "", "link": null},
+  {"nome": "Journey Moments", "tipo": "Temporada", "inicio": "2026-10-01", "fim": "2026-10-28", "nota": "", "link": null},
+  {"nome": "Battle Pass", "tipo": "Temporada", "inicio": "2026-08-24", "fim": "2026-10-28", "nota": "Dá o Fulmintis Prismana.", "link": "aniidex.html#Fulmintis"},
+  {"nome": "SPARKELF × Aniimo", "tipo": "Crossover", "inicio": "2026-09-16", "fim": "2026-12-09", "nota": "", "link": null},
+  {"nome": "Boundless Twining", "tipo": "Contínuo", "inicio": "2026-09-23", "fim": null, "nota": "Recompensa por logar no mobile e no PC/console.", "link": null},
+  {"nome": "Hatch Haste", "tipo": "Semanal", "inicio": null, "fim": null, "nota": "Sistema semanal de chocagem.", "link": null},
+  {"nome": "Holo-Battle Sim", "tipo": "Permanente", "inicio": null, "fim": null, "nota": "Solo roguelike. Libera no nível 45.", "link": "eventos.html#sim"}
+ ],
+ "changelog": [
+  {"data": "2026-09-25", "itens": [
+   "Site criado: Aniidex com 95 Aniimo, sistemas, meta de endgame e eventos.",
+   "Holo-Battle Interlink S3: planos para os 9 Alphas da rotação, com fraquezas calculadas pela tabela de tipos.",
+   "Update 1.1 (23/09): Irisalis no Legendary Journey, Egg Heist Chaos Mode, Dazmand, Vein Abundance; ataque básico passou de 0,1s para 0,3s de recarga."
+  ]}
+ ],
+ "fontes": [
+  {"nome": "Aniimo Tools", "url": "https://aniimotools.dev/"},
+  {"nome": "Aniimo Guide (Aniidex)", "url": "https://aniimoguide.com/aniidex"},
+  {"nome": "Wikily — Holo-Battle Interlink", "url": "https://wikily.gg/aniimo/holo-battle-interlink"},
+  {"nome": "AniimoVerse — Holo-Battle Interlink", "url": "https://www.aniimoverse.com/events/holo-battle-interlink"},
+  {"nome": "Mobalytics — Tier List", "url": "https://mobalytics.gg/gamebase/guides/aniimo-tier-list"},
+  {"nome": "All Things How — Tier List 1.0", "url": "https://allthings.how/aniimo-1-0-tier-list/"},
+  {"nome": "All Things How — Egg Heist", "url": "https://allthings.how/aniimo-operation-egg-heist-beginner-guide-team-mode-basics/"},
+  {"nome": "GameWith — Holo-Battle Sim", "url": "https://gamewith.ai/aniimo/en/articles/holo-battle-sim-guide"}
+ ]
+}

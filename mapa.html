@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mapa · Aniimo Guia de Campo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260926b">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main>
+  <section class="hero"><div class="kicker">Mapa interativo</div><h1>Mapa</h1>
+    <p class="lead">Todos os marcadores do jogo com filtros: baús, Lumin Amber, ovos, chefes, desafios, coleta, NPCs e os spawns de cada Aniimo. Escolha o mapa, depois o objetivo, e ligue os filtros indicados no painel do próprio mapa.</p></section>
+  <div id="app"><div class="loading">Carregando…</div></div>
+</main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260926b"></script>
+<script>
+(async () => {
+  try {
+    const [mp, ev] = await Promise.all([A.load("mapa"), A.load("eventos")]);
+    A.nav(mp.atualizado);
+    const esc = A.esc, F = mp.fonte;
+    const url = (id) => F.base + encodeURIComponent(id);
+    const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+    const vein = ev.calendario.find(c => c.regiao && A.status(c) === "live");
+
+    const opt = (ids, lab) => `<option value="">${lab}</option>` + ids.map(i => `<option value="${esc(i)}">${esc(i.replace("Random Sanctum ", "Sanctum "))}</option>`).join("");
+    const grp = (g) => `<details class="lg"><summary><b>${esc(g.pt)}</b> <span class="dim">${esc(g.g)} · ${g.total || g.itens.length}</span></summary>
+      <p class="muted" style="font-size:.88rem;margin:.4em 0">${esc(g.desc)}</p>
+      ${g.itens.length ? `<div class="row wrap">${g.itens.map(i => `<span class="pill">${esc(i)}</span>`).join(" ")}</div>` : ""}</details>`;
+
+    document.getElementById("app").innerHTML = `
+      ${vein ? `<div class="note ok" style="margin-bottom:14px"><b>Prismana desta semana:</b> ${esc(vein.nome)} (até ${A.fmtD(vein.fim)}). No mapa: Locations › Vein Abundance. ${esc(vein.nota || "")}</div>` : ""}
+      <div class="bar">
+        <div class="tg" id="tabs">${mp.principais.map(m => `<button data-m="${esc(m.id)}" title="${esc(m.desc)}">${esc(m.nome)}</button>`).join("")}</div>
+        <select id="sel-s" aria-label="Sanctums">${opt(mp.sanctums, "Sanctums aleatórios…")}</select>
+        <select id="sel-i" aria-label="Instâncias">${opt(mp.instancias, "Trials e instâncias…")}</select>
+      </div>
+      <div class="mapwrap" id="wrap">
+        <div class="maphd"><span id="mname" style="font-family:var(--fh);font-weight:700"></span><span class="dim" id="mdesc" style="font-size:.84rem"></span>
+          <span style="margin-left:auto" class="row"><button class="btn" id="fs">Tela cheia</button><a class="btn" id="ext" target="_blank" rel="noopener">Abrir no TH.GL ↗</a></span></div>
+        <iframe id="map" title="Mapa interativo de Aniimo (TH.GL)" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p class="dim" style="font-size:.8rem;margin:.5em 0 0">Mapa e marcadores: <a href="${esc(F.url)}" target="_blank" rel="noopener">${esc(F.nome)}</a>, embutido aqui. ${esc(F.resumo)} Se o mapa ficar em branco (bloqueador de anúncio ou navegador restrito), use o botão Abrir no TH.GL.</p>
+
+      <section style="margin-top:22px">
+        <h2>Filtros por objetivo</h2>
+        <p class="muted">Escolha o que você quer fazer. No painel à esquerda do mapa, clique em <b>NONE</b> no topo e ligue só o que está listado.</p>
+        <div class="bar"><div class="tg" id="obj">${mp.objetivos.map(o => `<button data-o="${o.id}">${esc(o.nome)}</button>`).join("")}</div></div>
+        <div id="objbox"></div>
+      </section>
+
+      <section style="margin-top:22px">
+        <h2>Legenda dos filtros</h2>
+        <p class="muted">Os ${mp.grupos.length} grupos do painel do mapa e o que tem dentro de cada um (nomes em inglês, iguais aos do mapa).</p>
+        <div class="bar"><input id="q" type="search" placeholder="Buscar marcador: Lumin Amber, Starine, Healer…" aria-label="Buscar marcador"><span class="count" id="cnt"></span></div>
+        <div class="grid g2" id="leg">${mp.grupos.map(grp).join("")}</div>
+      </section>
+
+      <section style="margin-top:22px" class="grid g2">
+        <div class="card"><h3>Regiões de Idyll</h3><div class="row wrap">${mp.regioes.map(r => `<span class="pill">${esc(r)}</span>`).join(" ")}</div></div>
+        <div class="card"><h3>Outros mapas da comunidade</h3><ul class="clean">${mp.alternativas.map(a => `<li><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nome)} ↗</a></li>`).join("")}</ul></div>
+      </section>`;
+
+    const ifr = document.getElementById("map"), tabs = document.getElementById("tabs"), sS = document.getElementById("sel-s"), sI = document.getElementById("sel-i");
+    const info = Object.fromEntries(mp.principais.map(m => [m.id, m]));
+    const show = (id, push = true) => {
+      if (!id) return;
+      const u = url(id);
+      if (ifr.dataset.cur !== id) { ifr.src = u; ifr.dataset.cur = id; }
+      document.getElementById("ext").href = u;
+      document.getElementById("mname").textContent = info[id] ? info[id].nome : id;
+      document.getElementById("mdesc").textContent = info[id] ? info[id].desc : (mp.sanctums.includes(id) ? "Sanctum aleatório" : "Trial / instância");
+      tabs.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.m === id));
+      sS.value = mp.sanctums.includes(id) ? id : ""; sI.value = mp.instancias.includes(id) ? id : "";
+      store.set("aniimo-mapa", id);
+      if (push) history.replaceState(null, "", "#" + encodeURIComponent(id));
+    };
+    tabs.addEventListener("click", e => { const b = e.target.closest("button"); if (b) show(b.dataset.m); });
+    sS.addEventListener("change", () => show(sS.value)); sI.addEventListener("change", () => show(sI.value));
+    document.getElementById("fs").addEventListener("click", () => { const w = document.getElementById("wrap"); if (document.fullscreenElement) document.exitFullscreen(); else if (w.requestFullscreen) w.requestFullscreen(); });
+
+    const all = [mp.principais.map(m => m.id), mp.sanctums, mp.instancias].flat();
+    const fromHash = decodeURIComponent(location.hash.slice(1));
+    show(all.includes(fromHash) ? fromHash : (all.includes(store.get("aniimo-mapa")) ? store.get("aniimo-mapa") : "Idyll"), false);
+
+    const objBox = document.getElementById("objbox"), objT = document.getElementById("obj");
+    const showObj = (id) => {
+      const o = mp.objetivos.find(x => x.id === id); if (!o) return;
+      objT.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.o === id));
+      objBox.innerHTML = `<div class="card hl"><div class="row" style="justify-content:space-between"><h3 style="margin:0">${esc(o.nome)}</h3><button class="btn" data-go="${esc(o.mapa)}">Abrir ${esc(info[o.mapa] ? info[o.mapa].nome : o.mapa)} no mapa ↑</button></div>
+        <p class="dim" style="font-size:.8rem;margin:.8em 0 .3em">LIGUE</p><ul class="clean">${o.ligar.map(l => `<li>${esc(l)}</li>`).join("")}</ul>
+        <p class="dim" style="font-size:.8rem;margin:.8em 0 .3em">DICAS</p><ul class="clean">${o.dicas.map(d => `<li class="muted">${esc(d)}</li>`).join("")}</ul></div>`;
+      store.set("aniimo-obj", id);
+    };
+    objT.addEventListener("click", e => { const b = e.target.closest("button"); if (b) showObj(b.dataset.o); });
+    objBox.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) { show(b.dataset.go); document.getElementById("wrap").scrollIntoView({behavior:"smooth"}); } });
+    showObj(mp.objetivos.some(o => o.id === store.get("aniimo-obj")) ? store.get("aniimo-obj") : mp.objetivos[0].id);
+
+    const q = document.getElementById("q"), leg = document.getElementById("leg"), cnt = document.getElementById("cnt");
+    q.addEventListener("input", () => {
+      const s = q.value.trim().toLowerCase(); let n = 0;
+      leg.querySelectorAll("details").forEach((d, i) => {
+        const g = mp.grupos[i], hit = !s || [g.g, g.pt, g.desc, ...g.itens].join(" ").toLowerCase().includes(s);
+        d.style.display = hit ? "" : "none"; d.open = !!s && hit; if (hit) n++;
+        d.querySelectorAll(".pill").forEach(p => p.classList.toggle("hit", !!s && p.textContent.toLowerCase().includes(s)));
+      });
+      cnt.textContent = s ? `${n} grupo(s)` : "";
+    });
+  } catch (e) { A.fail(e); }
+})();
+</script>
+</body>
+</html>

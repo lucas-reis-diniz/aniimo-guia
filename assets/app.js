@@ -1,6 +1,6 @@
 /* Aniimo — Guia de Campo · utilitários compartilhados */
 const A = (() => {
-  const V = "20260926";
+  const V = "20260926b";
   const cache = {};
   const load = (n) => cache[n] || (cache[n] = fetch(`data/${n}.json?v=${V}`).then(r => {
     if (!r.ok) throw new Error(`Falha ao carregar ${n}`); return r.json();
@@ -36,7 +36,7 @@ const A = (() => {
   const resists = (defs, els) => els.filter(e => multVs(e, defs) < 1);
 
   /* ---- nav ---- */
-  const PAGES = [["index.html","Início"],["eventos.html","Eventos"],["meta.html","Meta"],["builds.html","Builds"],["aniidex.html","Aniidex"],["sistemas.html","Sistemas"]];
+  const PAGES = [["index.html","Início"],["eventos.html","Eventos"],["meta.html","Meta"],["builds.html","Builds"],["aniidex.html","Aniidex"],["mapa.html","Mapa"],["sistemas.html","Sistemas"]];
   const nav = (upd) => {
     const here = location.pathname.split("/").pop() || "index.html";
     const links = PAGES.map(([h,t]) => `<a href="${h}" class="${h===here?"on":""}">${t}</a>`).join("");

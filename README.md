@@ -9,6 +9,7 @@ Guia pessoal de Aniimo publicado no GitHub Pages: eventos da semana com times po
 | `index.html` | Início: Holo-Battle da semana, Prismana da semana, eventos ativos e próximos |
 | `eventos.html` | Holo-Battle Interlink (todos os Alphas da rotação), Egg Heist, Holo-Battle Sim, calendário, fontes |
 | `meta.html` | Princípios, formato Twine, supports universais, times por elemento, tier list, build por papel |
+| `builds.html` | Build de cada forma final: skills por situação, held item, Awakening, personalidade, Star-Up |
 | `aniidex.html` | Todos os Aniimo com filtros e ficha detalhada |
 | `sistemas.html` | Tabela de tipos, papéis, BREAK, Potential, personalidade, Prismana, evoluções |
 | `data/*.json` | **Toda a informação do site.** As páginas só leem estes arquivos |
@@ -22,6 +23,7 @@ Quase toda atualização é só editar JSON em `data/`:
 - **Modo novo:** crie um bloco novo em `data/eventos.json` e uma seção em `eventos.html`.
 - **Aniimo novo ou balanceamento:** `data/aniimo.json`. `stats` segue a ordem HP, ATK, P.DEF, REGEN, M.DEF, BREAK (`null` = não publicado).
 - **Times:** `data/meta.json` → `cores`.
+- **Builds:** `data/builds.json` → `builds` (uma entrada por Aniimo; `reson` = alta/media/baixa).
 - Sempre atualize o campo `atualizado` e registre a mudança em `data/eventos.json` → `changelog`.
 - Ao mudar JSON, troque o `V` em `assets/app.js` (e o `?v=` dos HTML) para furar o cache.
 

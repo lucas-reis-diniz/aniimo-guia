@@ -5,19 +5,19 @@
 <title>Sistemas · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260925">
+<link rel="stylesheet" href="assets/style.css?v=20260926">
 </head>
 <body>
 <header class="top" id="top"></header>
 <main id="app"><div class="loading">Carregando…</div></main>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260925"></script>
+<script src="assets/app.js?v=20260926"></script>
 <script>
 (async () => {
   try {
     const [sis, dex] = await Promise.all([A.load("sistemas"), A.load("aniimo")]);
     A.setTypes(sis); A.nav(sis.atualizado);
-    const esc = A.esc, E = sis.elementos, P = sis.potential, PE = sis.personalidade, PR = sis.prismana;
+    const esc = A.esc, E = sis.elementos, P = sis.potential, PE = sis.personalidade, PR = sis.prismana, IT = sis.itens, RS = sis.resonance;
 
     const cell = (a, d) => { const m = A.mult(a, d); return m > 1 ? `<td class="sup">1,6</td>` : m < 1 ? `<td class="res">0,6</td>` : `<td class="neu">·</td>`; };
     const matrix = `<div class="tw"><table class="mx"><thead><tr><th class="rh">Ataque ↓ / Defesa →</th>${E.map(e => `<th>${A.chip(e)}</th>`).join("")}</tr></thead><tbody>
@@ -36,7 +36,7 @@
     document.getElementById("app").innerHTML = `
       <section class="hero"><div class="kicker">Mecânicas</div><h1>Sistemas</h1>
         <p class="lead">Tudo o que muda como você monta e investe: tipos, papéis, BREAK, Potential, personalidade, Prismana e evoluções.</p></section>
-      <nav class="sub"><a href="#tipos">Tipos</a><a href="#papeis">Papéis</a><a href="#break">BREAK</a><a href="#potential">Potential</a><a href="#personalidade">Personalidade</a><a href="#prismana">Prismana</a><a href="#evolucoes">Evoluções</a><a href="#starters">Starters</a></nav>
+      <nav class="sub"><a href="#tipos">Tipos</a><a href="#papeis">Papéis</a><a href="#break">BREAK</a><a href="#potential">Potential</a><a href="#personalidade">Personalidade</a><a href="#prismana">Prismana</a><a href="#itens">Held items</a><a href="#resonance">Star-Up</a><a href="#evolucoes">Evoluções</a><a href="#starters">Starters</a></nav>
 
       <section id="tipos"><h2>Tabela de tipos</h2>
         <p class="muted">${esc(sis.tipos.nota)} Contra Aniimo de dois elementos, os multiplicadores se multiplicam.</p>
@@ -71,6 +71,24 @@
           ${Object.entries(byReg).map(([r, l]) => `<tr><td><b>${esc(r)}</b></td><td>${l.map(a => `<a href="${A.dexLink(a.nome)}">${esc(a.nome)}</a> ${A.chips(a.el)}`).join(" &nbsp; ")}</td></tr>`).join("")}
           <tr><td><b>Só por chocagem</b></td><td class="muted">Sparkelf, Rapier (fora do Aniidex numerado)</td></tr>
         </tbody></table></div></section>
+
+      <section id="itens"><h2>Held items</h2>
+        <ul class="tick">${IT.regras.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+        <div class="tw" style="margin-top:12px"><table><thead><tr><th>Item</th><th>Base</th><th>Efeito</th><th>Pra quem</th></tr></thead><tbody>
+          ${IT.lista.map(i => `<tr><td><b>${esc(i.nome)}</b></td><td class="muted">${esc(i.base)}</td><td>${esc(i.efeito)}</td><td class="muted">${esc(i.para)}</td></tr>`).join("")}
+        </tbody></table></div>
+        <p class="dim" style="font-size:.85rem">O item recomendado de cada Aniimo está em <a href="builds.html">Builds</a>.</p></section>
+
+      <section id="resonance"><h2>Star-Up (Resonance)</h2>
+        <p class="lead">${esc(RS.resumo)}</p>
+        <div class="grid g2">
+          <div class="card"><h3>Estágios</h3><div class="tw"><table><thead><tr><th>Estágio</th><th>Nível</th><th>Bônus ao subir</th></tr></thead><tbody>${RS.estagios.map(e => `<tr><td><b>${e.n}</b> <span class="dim">${esc(e.nome)}</span></td><td>${esc(e.nivel)}</td><td>${esc(e.bonus)}</td></tr>`).join("")}</tbody></table></div></div>
+          <div class="card"><h3>Estrelas (padrão repetido)</h3><div class="tw"><table><thead><tr><th>Posição</th><th>Dewdrop</th><th>Ganho</th></tr></thead><tbody>${RS.estrelas.map(e => `<tr><td>${e.pos}</td><td>${e.custo}</td><td>${esc(e.ganho)}</td></tr>`).join("")}</tbody></table></div></div>
+        </div>
+        <div class="grid g2" style="margin-top:14px">
+          <div class="card"><h3>Materiais</h3><ul class="tick">${RS.materiais.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>
+          <div class="card hl"><h3>O que priorizar</h3><ul class="tick">${RS.prioridade.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>
+        </div></section>
 
       <section id="evolucoes"><h2>Linhas de evolução</h2>
         <p class="muted">Bifurcações são permanentes: um Aniimo que vira um lado nunca vira o outro. Para ter os dois, crie duas cópias.</p>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Builds · Aniimo Guia de Campo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260926">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main>
+  <section class="hero"><div class="kicker">Build por Aniimo</div><h1>Builds</h1>
+    <p class="lead">Para cada forma final: skills como main e por situação, a skill de entrada como support, held item, ordem de Capability Awakening, personalidade e prioridade de Star-Up.</p></section>
+  <div class="note info" style="margin-bottom:18px">No formato Twine só o main fica em campo. A linha <b>Como support</b> é a skill que vale usar quando ele entra no swap. Held item, Awakening e Star-Up importam de verdade no main; nos supports, o mínimo basta. Regras gerais de <a href="sistemas.html#itens">held items</a> e <a href="sistemas.html#resonance">Resonance</a> em Sistemas.</div>
+  <div class="bar">
+    <input id="q" type="search" placeholder="Buscar Aniimo, skill ou held item…" aria-label="Buscar">
+    <select id="sort" aria-label="Ordenar"><option value="tier">Melhor tier</option><option value="nome">Nome</option><option value="reson">Prioridade de Star-Up</option></select>
+  </div>
+  <div class="bar"><div class="tg" id="fe"></div></div>
+  <div class="bar"><div class="tg" id="fr"></div><span class="count" id="count"></span></div>
+  <div id="list"><div class="loading">Carregando…</div></div>
+</main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260926"></script>
+<script>
+(async () => {
+  try {
+    const [bd, dex, sis] = await Promise.all([A.load("builds"), A.load("aniimo"), A.load("sistemas")]);
+    A.setTypes(sis); A.nav(bd.atualizado);
+    const esc = A.esc, amap = A.byName(dex.aniimo), E = sis.elementos;
+    const ROLES = ["DPS","Break","Suporte","Cura","Regen"];
+    const ORDER = {"SS":0,"S+":0,"S":1,"A":2,"B":3,"C":4,"D":5}, RO = {alta:0, media:1, baixa:2};
+    const tsc = (a) => Math.min(ORDER[a.tier.ath] ?? 9, ORDER[a.tier.mob] ?? 9) + ((ORDER[a.tier.ath] ?? 9) + (ORDER[a.tier.mob] ?? 9)) / 100;
+    const items = Object.entries(bd.builds).map(([n, b]) => ({n, b, a: amap[n]})).filter(x => x.a);
+    const st = {q:"", el:new Set(), r:new Set(), sort:"tier"};
+    document.getElementById("fe").innerHTML = E.map(e => `<button data-e="${e}">${e}</button>`).join("");
+    document.getElementById("fr").innerHTML = ROLES.map(r => `<button data-r="${r}">${r}</button>`).join("");
+
+    const hay = (x) => [x.n, x.b.item.join(" "), x.b.main.join(" "), x.b.kit.map(k => k.n).join(" "), x.b.swap].join(" ").toLowerCase();
+    const card = (x) => `<div class="card bcard" id="${esc(x.n)}" style="margin-bottom:14px">
+      <div class="hd"><div class="row"><h3><a href="${A.dexLink(x.n)}" style="color:var(--tx)">${esc(x.n)}</a></h3>${A.chips(x.a.el)} ${A.role(x.a.papel)}</div>
+      <span>${A.tier(x.a.tier.ath,"All Things How")} ${A.tier(x.a.tier.mob,"Mobalytics")}</span></div>
+      ${A.buildHTML(x.n, x.b, bd.resson)}</div>`;
+    const draw = () => {
+      let r = items.filter(x => (!st.q || hay(x).includes(st.q)) && (!st.el.size || x.a.el.some(e => st.el.has(e))) && (!st.r.size || st.r.has(x.a.papel)));
+      if (st.sort === "tier") r.sort((p, q) => tsc(p.a) - tsc(q.a));
+      else if (st.sort === "nome") r.sort((p, q) => p.n.localeCompare(q.n));
+      else r.sort((p, q) => (RO[p.b.reson] - RO[q.b.reson]) || (tsc(p.a) - tsc(q.a)));
+      document.getElementById("list").innerHTML = r.map(card).join("") || `<p class="dim">Nenhuma build com esses filtros.</p>`;
+      document.getElementById("count").textContent = `${r.length} de ${items.length}`;
+    };
+    document.getElementById("q").addEventListener("input", e => { st.q = e.target.value.trim().toLowerCase(); draw(); });
+    document.getElementById("sort").addEventListener("change", e => { st.sort = e.target.value; draw(); });
+    const tog = (id, key, attr) => document.getElementById(id).addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const v = b.dataset[attr]; st[key].has(v) ? st[key].delete(v) : st[key].add(v); b.classList.toggle("on"); draw(); });
+    tog("fe","el","e"); tog("fr","r","r");
+    draw();
+    if (location.hash) { const t = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t) setTimeout(() => t.scrollIntoView(), 60); }
+  } catch (e) { A.fail(e, "list"); }
+})();
+</script>
+</body>
+</html>

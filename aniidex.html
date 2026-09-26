@@ -5,7 +5,7 @@
 <title>Aniidex · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260925">
+<link rel="stylesheet" href="assets/style.css?v=20260926">
 </head>
 <body>
 <header class="top" id="top"></header>
@@ -24,11 +24,11 @@
 </main>
 <dialog id="dlg"><div class="dlg" id="dlgc"></div></dialog>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260925"></script>
+<script src="assets/app.js?v=20260926"></script>
 <script>
 (async () => {
   try {
-    const [dex, sis] = await Promise.all([A.load("aniimo"), A.load("sistemas")]);
+    const [dex, sis, bd] = await Promise.all([A.load("aniimo"), A.load("sistemas"), A.load("builds")]);
     A.setTypes(sis); A.nav(dex.atualizado);
     const esc = A.esc, L = dex.aniimo, amap = A.byName(L), E = sis.elementos;
     const ROLES = ["DPS","Break","Suporte","Cura","Regen"], SN = ["HP","ATK","P.DEF","REGEN","M.DEF","BREAK"];
@@ -77,7 +77,8 @@
           </div>
         </div>
         ${a.trait ? `<h4 style="margin-top:18px">Trait · ${esc(a.trait.nome)}</h4><p>${esc(a.trait.efeito)}</p>` : ""}
-        ${a.skills.length ? `<h4 style="margin-top:14px">Skills principais</h4>${a.skills.map(s => `<div class="skill">${s.power != null ? `<span class="pw">${s.power}</span>` : ""}<b>${esc(s.nome)}</b><div class="muted" style="font-size:.9rem">${esc(s.efeito)}</div></div>`).join("")}` : ""}
+        ${bd.builds[a.nome] ? `<h4 style="margin-top:18px">Build <a href="builds.html#${encodeURIComponent(a.nome)}" style="font-size:.8rem;font-weight:500;margin-left:6px">abrir em Builds →</a></h4>${A.buildHTML(a.nome, bd.builds[a.nome], bd.resson)}` : ""}
+        ${!bd.builds[a.nome] && a.skills.length ? `<h4 style="margin-top:14px">Skills principais</h4>${a.skills.map(s => `<div class="skill">${s.power != null ? `<span class="pw">${s.power}</span>` : ""}<b>${esc(s.nome)}</b><div class="muted" style="font-size:.9rem">${esc(s.efeito)}</div></div>`).join("")}` : ""}
         ${a.nota ? `<div class="note info" style="margin-top:14px">${esc(a.nota)}</div>` : ""}
         ${a.evo ? `<h4 style="margin-top:16px">Evolução</h4><p class="muted">${esc(a.evo)}</p>` : ""}`;
       dc.querySelector(".x").onclick = () => dlg.close();

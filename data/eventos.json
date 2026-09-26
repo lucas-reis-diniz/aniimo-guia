@@ -103,7 +103,8 @@
   {"data": "2026-09-26", "itens": [
    "Nova página Builds: 52 formas finais com skills como main e por situação, skill de entrada como support, held item, ordem de Capability Awakening, personalidade e prioridade de Star-Up.",
    "Build também aparece na ficha de cada Aniimo no Aniidex, com o kit completo de skills.",
-   "Sistemas: seções novas de Held items e Star-Up (Resonance)."
+   "Sistemas: seções novas de Held items e Star-Up (Resonance).",
+   "Nova página Mapa: mapa interativo do TH.GL embutido (Idyll, Astra, Egg Heist, Sanctums e trials), filtros por objetivo e legenda pesquisável dos marcadores."
   ]},
   {"data": "2026-09-25", "itens": [
    "Site criado: Aniidex com 95 Aniimo, sistemas, meta de endgame e eventos.",
@@ -123,6 +124,7 @@
   {"nome": "Wikily — skills e held items por Aniimo", "url": "https://wikily.gg/aniimo/aniilog/fulmintis/abilities"},
   {"nome": "All Things How — Builds", "url": "https://allthings.how/aniimo-builds-best-skills-held-items-and-stat-priorities-for-every-aniimo/"},
   {"nome": "Aniimo Tools — Resonance", "url": "https://aniimotools.dev/systems/resonance/"},
-  {"nome": "MetaBot — Held items", "url": "https://metabot.gg/en/aniimo/items/held"}
+  {"nome": "MetaBot — Held items", "url": "https://metabot.gg/en/aniimo/items/held"},
+  {"nome": "TH.GL — Aniimo Interactive Map", "url": "https://aniimo.th.gl/"}
  ]
 }

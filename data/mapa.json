@@ -1,0 +1,59 @@
+{
+  "atualizado": "2026-09-26",
+  "fonte": {"nome": "TH.GL (The Hidden Gaming Lair)", "url": "https://aniimo.th.gl/", "base": "https://aniimo.th.gl/maps/", "resumo": "51 mapas e cerca de 49 mil marcadores, atualizado pela equipe do TH.GL (última atualização do mapa: 25/09/2026)."},
+  "principais": [
+    {"id": "Idyll", "nome": "Idyll", "desc": "Mundo aberto. Tem camada Underground (cavernas) no seletor do próprio mapa."},
+    {"id": "Astra", "nome": "Astra", "desc": "Cidade central: lojas, NPCs e transporters."},
+    {"id": "Operation: Egg Heist", "nome": "Egg Heist (solo)", "desc": "Lost Isles: chaves, salas trancadas, baús, ovos e entradas do Lost Sanctum."},
+    {"id": "Operation: Egg Heist Team Mode", "nome": "Egg Heist (equipe)", "desc": "Mesmo modo em grupo, com layout próprio."}
+  ],
+  "sanctums": ["Random Sanctum 31","Random Sanctum 32","Random Sanctum 33","Random Sanctum 34","Random Sanctum 35","Random Sanctum 36","Random Sanctum 37","Random Sanctum 38","Random Sanctum 39","Random Sanctum 40","Random Sanctum 41","Random Sanctum 42","Random Sanctum 43","Random Sanctum 44","Random Sanctum 45","Random Sanctum 46","Random Sanctum 47","Random Sanctum 48","Random Sanctum 49","Random Sanctum 50","Random Sanctum 51","Random Sanctum 52","Random Sanctum 53","Random Sanctum 54","Random Sanctum 55","Random Sanctum 56","Random Sanctum 57","Random Sanctum 58","Random Sanctum 59","Random Sanctum 60","Random Sanctum (6-Key Reward)"],
+  "instancias": ["First Sight","First Spark","Rising Wind","Rising Flame","Rushing Rapids","Frigid Waters","Chasing Clouds","Soaring Glide","Blazing Wings","Electric Flow","Lightning Gale","Burning Brambles","Shattering Stone","Twisted Roots / Stonebound Sword","Vigilant Eyes","Courageous Wit"],
+  "regioes": ["Nimbus Fields","The Mistwoods","The Argent Strait","Blitzwood","Sea of Flowers","Tideblossom Coast","Russet Highlands","Berylline Vale","Echoback Landing","Beast Fang Ridge","Forest of Falling Stars","Driftwise Meadow","Zephyrus Landbridge","Rosetower Woods"],
+  "grupos": [
+    {"g": "Drawings", "pt": "Desenhos", "desc": "Bordas e nomes das regiões.", "itens": ["Region Borders","Region Names"]},
+    {"g": "Fast Travel", "pt": "Viagem rápida", "desc": "Pontos de teleporte e respawn. Deixe ligado sempre.", "itens": ["Transporter","Astra Transporter","Mistwoods Transporter","Quest Transporter","Functional Transporter (For Limited Time Gameplay)","Bloom","Bonfire","Bonfire Spawn","RV Park","Spawn Point"]},
+    {"g": "Locations", "pt": "Locais", "desc": "Vilas, cavernas, Sanctums e os pontos de Vein (Prismana).", "itens": ["Village","Astra Outpost","Branch","Cave Entrance","Personnel","Sanctum","Vein Abundance","Vein Rift"]},
+    {"g": "Habitats", "pt": "Habitats", "desc": "Pontos ecológicos e spawn de pet arco-íris.", "itens": ["Key Ecological Point","Rainbow Pet Spawn Point"]},
+    {"g": "Bosses", "pt": "Chefes", "desc": "Alphas e Omegas do mundo aberto.", "itens": ["Alpha Aniimo","Omega Aniimo"]},
+    {"g": "Challenges & Puzzles", "pt": "Desafios e puzzles", "desc": "Tudo que conta para exploração e dá Lumin Amber ou baú.", "itens": ["Dr. Glass’s Trial","Ecological Tracing","Elite Pathfinder Challenge","Pathfinder Challenge","Help the Aniimo","Lumin Collection","Lumin Marking","Morphling’s Memory","Runaway Amber","Themed Puzzle"]},
+    {"g": "Sanctums", "pt": "Sanctums", "desc": "Dentro dos Sanctums: estátuas, checkpoints e saídas.", "itens": ["Aniimo Statue","Checkpoint","Sanctum Exit"]},
+    {"g": "Chests", "pt": "Baús", "desc": "Baús do mundo aberto, do básico ao superior.", "itens": ["Basic Chest","Advanced Chest","Superior Chest"]},
+    {"g": "Eggs", "pt": "Ovos", "desc": "Ovos fixos no mapa, incluindo os de Alpha e os Incredible.", "itens": ["Alpha Egg","Alpha Bolty Egg","Elite Egg","Incredible Egg","Incredible Emberpup Egg","Incredible Grassland Egg","Forest Egg","Grassland Egg","Highland Egg","Blossom Egg","Baleetle Egg","Egg Gifted from Flowers","Egg of Prayers"]},
+    {"g": "Collectibles", "pt": "Coletáveis", "desc": "Lumin Amber, Aniipods, pontos de escavação e itens brilhantes.", "itens": ["Lumin Amber","Lumin Amber (Puzzle Reward)","Aniipod","Aniipod Pro","Dig Spot","Glowing Pickup"]},
+    {"g": "Gathering", "pt": "Coleta", "total": 75, "desc": "75 tipos: minérios, plantas, cogumelos e livros de pesquisa/lore.", "itens": ["Charstone","Ferric Charstone","Chroma Ore","Glintstone","Starine","Large Starine","Treasured Large Starine","Turtleback Ore","Stardust Agate","Coral Branch","Azure Grass","Star Grass","Flufftail Grass","Mint","Spiked Herb","Sunny Daisy","Lunar Daisy","Flame Flower","Whitesnow Rose","Chromaflare Peony","Dreamtide Bloom","Morning Star Bloom","Whalesong Blossom","Irisalis Petal","Red Cap","Blue Cap","Orange Cap","White Fluffroom","Truffle","Mutant Truffle","Sweetfern Nut","Tartball","Bittersweet Dew","Stoneflower Dew","Mask Fragment","livros e notas de pesquisa (Family Research, Treasures of the Sea, Perfumer’s Memoirs…)"]},
+    {"g": "NPCs", "pt": "NPCs e lojas", "desc": "Healer, lojas, Researcher, Party Task e Rift Exploration.", "itens": ["Healer","General Store","Shop","Aniipod Shop","Clothes Shop","Coffee Shop","Decoration Shop","Toy Shop","Restaurant","Researcher","Creation Guide","Party Task","Rift Exploration","NPC"]},
+    {"g": "Operation: Egg Heist", "pt": "Egg Heist", "desc": "40 filtros do modo: chaves, salas, baús, ovos, portais e saqueáveis.", "itens": ["Keys (Egg Heist)","Blue Key Room","Purple Key Room","Gold Key Room","Legendary Chest","Exquisite Relic Chest","Simple Relic Chest","Disc Chest","Ornate Wooden Chest","Worn Wooden Chest","Simple Iron Chest","Prismana & Legendary Loot (Egg Heist)","Chips & Amplifiers (Egg Heist)","Loose Loot (Egg Heist)","Legendary Giga-Egg","Giant Umbrabow Egg","Mysterious Prismana Egg","Evercrystal Egg","Umbral Aniimo Egg","Incredible Ruins Aniimo Egg","Ruins Aniimo Egg","Egg Nest","Egg Boat","Egg Hat Giftbox","Lost Sanctum Main Entrance","Lost Sanctum Side Entrance","Portal","Teleporter","Limited-Time Challenge","Coin Monsters Spotted","Wild Hiding Spot","Clutter Pile","Fossil Pile","Ore Cluster","Hollow Stump","Destructible Rubble","Ornate Clay Pot","Ornate Clay Vat","Simple Clay Pot","Simple Stone Sarcophagus"]},
+    {"g": "Aniimo", "pt": "Aniimo", "total": 166, "desc": "166 filtros, um por espécie: onde cada Aniimo aparece.", "itens": []}
+  ],
+  "objetivos": [
+    {"id": "explorar", "nome": "Fechar exploração", "mapa": "Idyll",
+     "ligar": ["Fast Travel (tudo)", "Challenges & Puzzles (tudo)", "Collectibles › Lumin Amber e Lumin Amber (Puzzle Reward)", "Chests (tudo)"],
+     "dicas": ["A caixa de busca do próprio mapa (Type to search…) acha qualquer item pelo nome em inglês.","Faça por região: use Drawings › Region Borders para não pular pedaço.", "Ligue Locations › Cave Entrance e troque para a camada Underground para pegar o que fica em caverna."]},
+    {"id": "prismana", "nome": "Caçar Prismana", "mapa": "Idyll",
+     "ligar": ["Locations › Vein Abundance e Vein Rift", "Habitats › Rainbow Pet Spawn Point e Key Ecological Point", "Aniimo › só as espécies que você quer"],
+     "dicas": ["A região do Vein Abundance muda toda segunda; a da semana aparece no topo desta página.", "No filtro Aniimo, desligue tudo (NONE) e ligue só a espécie alvo para ver os spawns dela."]},
+    {"id": "ovos", "nome": "Ovos", "mapa": "Idyll",
+     "ligar": ["Eggs (tudo)", "Collectibles › Dig Spot"],
+     "dicas": ["Alpha Egg e os Incredible são os que valem a viagem."]},
+    {"id": "chefes", "nome": "Chefes", "mapa": "Idyll",
+     "ligar": ["Bosses › Alpha Aniimo e Omega Aniimo", "Fast Travel (tudo)"],
+     "dicas": ["Times e fraquezas dos Alphas estão em Eventos e Meta deste site."]},
+    {"id": "coleta", "nome": "Materiais", "mapa": "Idyll",
+     "ligar": ["Gathering › só o material que falta (use NONE e ligue um por um)"],
+     "dicas": ["Minérios: Charstone, Chroma Ore, Glintstone, Starine, Turtleback Ore, Stardust Agate.", "Os livros e notas de pesquisa também ficam em Gathering."]},
+    {"id": "egg", "nome": "Egg Heist", "mapa": "Operation: Egg Heist",
+     "ligar": ["Operation: Egg Heist › Keys, Blue/Purple/Gold Key Room", "Legendary Chest, Exquisite Relic Chest e Prismana & Legendary Loot", "Mysterious Prismana Egg, Legendary Giga-Egg e Giant Umbrabow Egg", "Lost Sanctum Main/Side Entrance, Portal e Teleporter"],
+     "dicas": ["Marque a rota de saída antes de pegar ovo.", "Regras e time do modo: Eventos › Egg Heist."]},
+    {"id": "lojas", "nome": "Lojas e NPCs", "mapa": "Astra",
+     "ligar": ["NPCs (tudo)", "Fast Travel › Astra Transporter"],
+     "dicas": ["Healer e General Store também aparecem nas vilas de Idyll."]}
+  ],
+  "alternativas": [
+    {"nome": "Game8 — Full Interactive Map", "url": "https://game8.co/games/Aniimo/archives/618730"},
+    {"nome": "questlog.gg", "url": "https://questlog.gg/aniimo/en/map"},
+    {"nome": "Aniidex.com — Idyll, Astra e Egg Heist", "url": "https://aniidex.com/map/"},
+    {"nome": "interactivemap.app", "url": "https://interactivemap.app/aniimo/maps/"},
+    {"nome": "Mobalytics — regiões e coletáveis", "url": "https://mobalytics.gg/gamebase/guides/aniimo-map"}
+  ]
+}

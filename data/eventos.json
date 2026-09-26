@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-09-25",
+ "atualizado": "2026-09-26",
  "holo": {
   "nome": "Holo-Battle Interlink",
   "temporada": "Season 3",
@@ -100,6 +100,11 @@
   {"nome": "Holo-Battle Sim", "tipo": "Permanente", "inicio": null, "fim": null, "nota": "Solo roguelike. Libera no nível 45.", "link": "eventos.html#sim"}
  ],
  "changelog": [
+  {"data": "2026-09-26", "itens": [
+   "Nova página Builds: 52 formas finais com skills como main e por situação, skill de entrada como support, held item, ordem de Capability Awakening, personalidade e prioridade de Star-Up.",
+   "Build também aparece na ficha de cada Aniimo no Aniidex, com o kit completo de skills.",
+   "Sistemas: seções novas de Held items e Star-Up (Resonance)."
+  ]},
   {"data": "2026-09-25", "itens": [
    "Site criado: Aniidex com 95 Aniimo, sistemas, meta de endgame e eventos.",
    "Holo-Battle Interlink S3: planos para os 9 Alphas da rotação, com fraquezas calculadas pela tabela de tipos.",
@@ -114,6 +119,10 @@
   {"nome": "Mobalytics — Tier List", "url": "https://mobalytics.gg/gamebase/guides/aniimo-tier-list"},
   {"nome": "All Things How — Tier List 1.0", "url": "https://allthings.how/aniimo-1-0-tier-list/"},
   {"nome": "All Things How — Egg Heist", "url": "https://allthings.how/aniimo-operation-egg-heist-beginner-guide-team-mode-basics/"},
-  {"nome": "GameWith — Holo-Battle Sim", "url": "https://gamewith.ai/aniimo/en/articles/holo-battle-sim-guide"}
+  {"nome": "GameWith — Holo-Battle Sim", "url": "https://gamewith.ai/aniimo/en/articles/holo-battle-sim-guide"},
+  {"nome": "Wikily — skills e held items por Aniimo", "url": "https://wikily.gg/aniimo/aniilog/fulmintis/abilities"},
+  {"nome": "All Things How — Builds", "url": "https://allthings.how/aniimo-builds-best-skills-held-items-and-stat-priorities-for-every-aniimo/"},
+  {"nome": "Aniimo Tools — Resonance", "url": "https://aniimotools.dev/systems/resonance/"},
+  {"nome": "MetaBot — Held items", "url": "https://metabot.gg/en/aniimo/items/held"}
  ]
 }

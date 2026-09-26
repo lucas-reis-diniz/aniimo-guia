@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-09-25",
+ "atualizado": "2026-09-26",
  "elementos": ["Fogo", "Água", "Grama", "Vento", "Terra", "Gelo", "Elétrico", "Sombrio", "Luz"],
  "tipos": {
   "multiplicadores": {"super": 1.6, "neutro": 1.0, "resistido": 0.625},
@@ -84,6 +84,65 @@
    {"nome": "Chocagem", "desc": "Estátuas de Weekend Prayer e ovos Prismana garantem forma Prismana ao chocar."}
   ],
   "cuidado": "Não há confirmação de que a forma Prismana sobreviva à evolução. O caminho seguro é capturar já no estágio que você vai usar."
+ },
+ "itens": {
+  "regras": [
+   "Cada Aniimo leva 1 held item. O item tem um bônus base que cresce com a raridade (Rare +3%, Epic +5%, Legendary +10%) e um efeito próprio.",
+   "Todos saem na Pawprint Shop (250 Paw Coin), em baús, pacotes de held item e recompensas de Adventure Rank.",
+   "No formato Twine o item que mais importa é o do main. Supports só precisam de EP/REGEN."
+  ],
+  "lista": [
+   {"nome": "Ferocious Fang", "base": "+Damage Amp", "efeito": "+0,7 de ATK por nível.", "para": "DPS em geral. O item padrão de dano."},
+   {"nome": "Heartseeker Pendant", "base": "+Damage Amp", "efeito": "50% de chance de +10 de might após um crítico.", "para": "Mains de crítico: Fulmintis, Fenmane, Glynsera."},
+   {"nome": "Fission Needles", "base": "+Damage Amp", "efeito": "Cada básico tem 50% de chance de causar o dobro.", "para": "Quem bate muito de básico: Lunara, Ignitis."},
+   {"nome": "Echoing Grimoire", "base": "+Damage Amp", "efeito": "+5% de dano por skill usada em sequência (até 5).", "para": "Spam de skill no BREAK Pursuit (Pawney)."},
+   {"nome": "Floral Rainbow Feather", "base": "—", "efeito": "Clones invocados causam +30% de dano.", "para": "Irisalis e outros que atacam com clones."},
+   {"nome": "Capacitous Battery", "base": "+Damage Amp", "efeito": "+30% de dano de ultimate.", "para": "Mains cuja ultimate é o golpe principal (Grizbo)."},
+   {"nome": "Explosive Gloves", "base": "+Damage Amp", "efeito": "+5% de Damage Amp a cada 10 EP disponível.", "para": "Quem joga guardando EP (Scorchhowl)."},
+   {"nome": "Finisher Bell", "base": "+Damage Amp", "efeito": "+30% de dano final contra alvos abaixo de 30% de vida.", "para": "Execução; situacional."},
+   {"nome": "Ambusher's Cloak", "base": "+Damage Amp", "efeito": "+25% de Damage Amp atacando furtivo ou pelas costas.", "para": "Situacional."},
+   {"nome": "Destiny's Dice", "base": "+Damage Amp", "efeito": "Dano varia entre 70% e 150%.", "para": "Aposta; não recomendado."},
+   {"nome": "Gargantuan Horn", "base": "+BREAK", "efeito": "+0,7 de BREAK por nível.", "para": "Todo Break. O item padrão de quebra."},
+   {"nome": "Avenging Gear", "base": "+BREAK", "efeito": "Ao tomar dano ganha Counter Mark: +30% no próximo dano de BREAK.", "para": "Break de contra-ataque (Helgon) e tanks."},
+   {"nome": "Giant Tortoise Shell", "base": "+HP", "efeito": "+0,7 de P.DEF e M.DEF por nível.", "para": "Tank de raid que está morrendo."},
+   {"nome": "Heritage Amulet", "base": "+HP", "efeito": "Escudo de 4% do HP máximo por 5s a cada 10 golpes recebidos.", "para": "Quem apanha muito (Turbo, Tubster, Wavwal)."},
+   {"nome": "Spirited Feather", "base": "+REGEN", "efeito": "+0,7 de REGEN por nível.", "para": "Regen, suporte e cura. O item padrão de suporte."},
+   {"nome": "Auspicious Bell", "base": "+REGEN", "efeito": "Ao usar skill, 20% de chance de ganhar 5 EP.", "para": "Supports que entram e usam skill."},
+   {"nome": "Miraculous Fleece", "base": "+6% de cura", "efeito": "Transfere 10% da cura excedente pro aliado com menos vida.", "para": "Healers: Gracewing, Glacy, Glameep."},
+   {"nome": "Lightning Needle", "base": "+HP", "efeito": "Dano Elétrico de 2% do HP máximo em inimigos a até 3 m.", "para": "Situacional."}
+  ]
+ },
+ "resonance": {
+  "resumo": "Resonance (Star-Up) sobe os stats base de um Aniimo de forma permanente, em 7 estágios. Cada estágio tem tantas estrelas quanto o número dele (21 no total). Você compra estrelas com Dewdrop Crystals e sobe de estágio (Ascension) com Elemental Stones.",
+  "estrelas": [
+   {"pos": 1, "custo": 20, "ganho": "ATK +10, BREAK +5"},
+   {"pos": 2, "custo": 25, "ganho": "P.DEF +5, M.DEF +5"},
+   {"pos": 3, "custo": 30, "ganho": "HP +320, REGEN +8"},
+   {"pos": 4, "custo": 40, "ganho": "P.DEF +5, M.DEF +5"},
+   {"pos": 5, "custo": 50, "ganho": "ATK +10, BREAK +5"},
+   {"pos": 6, "custo": 60, "ganho": "HP +320, REGEN +8"}
+  ],
+  "estagios": [
+   {"n": 1, "nome": "Lumin", "nivel": "—", "bonus": "—"},
+   {"n": 2, "nome": "Gamma", "nivel": "Nv 35", "bonus": "ATK/BREAK/HP +2%"},
+   {"n": 3, "nome": "Nova", "nivel": "Nv 35", "bonus": "REGEN/P.DEF/M.DEF +2%"},
+   {"n": 4, "nome": "Legendary", "nivel": "Nv 40", "bonus": "Counter Boost +20%"},
+   {"n": 5, "nome": "Aeon", "nivel": "Nv 50", "bonus": "Capability Awakening +5"},
+   {"n": 6, "nome": "—", "nivel": "Nv 60", "bonus": "Capability Awakening +8"},
+   {"n": 7, "nome": "—", "nivel": "Nv 65", "bonus": "Capability Awakening +10"}
+  ],
+  "materiais": [
+   "Dewdrop Crystals regionais: toda estrela. Precious Dewdrop Crystal substitui qualquer um. Total pra maximizar: 870.",
+   "Elemental Stones: só nas Ascensions (Blaze/Fogo, Freeze/Gelo, Gust/Vento, Light/Luz, Loam/Terra, Night/Sombrio, Roar/Elétrico, Sprout/Grama, Wave/Água). Flux Crystal substitui qualquer um. Total: 40.",
+   "Onde farmar: derrotar Alphas e Omegas é a fonte principal; também baús do mundo aberto, Elite Training, desafios de Pathfinder e lojas.",
+   "Capturar duplicatas dá cristais da família, não os regionais que a estrela pede."
+  ],
+  "prioridade": [
+   "Não há reembolso: invista só em quem você vai manter. A Inheritance transfere a Resonance pra outra cópia da mesma família.",
+   "O Estágio 4 é o salto grande (Counter Boost +20%). Leve o main até lá primeiro.",
+   "Os Estágios 5 a 7 dão cargas extras de Capability Awakening: é onde o main vira endgame.",
+   "Supports no formato Twine só precisam do Estágio 2–3. Não gaste Dewdrop neles antes do main estar no 4."
+  ]
  },
  "starters": {
   "resumo": "Lunara e Helion ganham +30% de dano final quando NÃO atacam com elemento vantajoso. Luz só é super efetiva contra Vento e Sombrio, então o bônus liga quase sempre.",

@@ -1,0 +1,31 @@
+{
+  "atualizado": "2026-09-28",
+  "pares": [
+    ["Leafy", "Irisalis", "Recomendação oficial é Leafy ⇄ Irisal; vale para a forma final Irisalis."],
+    ["Flamerion", "Scorchhowl", ""],
+    ["Flamerion", "Magmarex", ""],
+    ["Fragrancier", "Stellarys", ""],
+    ["Hexxin", "Stellarys", ""],
+    ["Sherro", "Piopiota", ""],
+    ["Bailite", "Grizbo", ""],
+    ["Blazen", "Luminelle", ""],
+    ["Dazmand", "Fenmane", ""],
+    ["Eklue", "Helgon", ""],
+    ["Geoclaw", "Glynsera", ""],
+    ["Scorchhowl", "Somniwing", ""],
+    ["Cornet", "Tromber", ""],
+    ["Melloblum", "Thornblade", ""],
+    ["Waleetle", "Bouldus", ""]
+  ],
+  "autoRevive": ["Irisalis"],
+  "modos": {
+    "evento": {"nome": "Evento", "sub": "Holo-Battle e chefes (Twine)", "desc": "Só o main fica em campo. Os 3 supports entram, usam uma skill e voltam, então o que conta neles é a skill de entrada: buff para o elemento do main, cura e EP. Stats de support quase não importam."},
+    "aberto": {"nome": "Mundo aberto", "sub": "exploração e captura", "desc": "Os 4 lutam de verdade e você troca entre eles (a troca tem recarga). Vale equilibrar papéis (dano, BREAK, cura/suporte) e cobrir elementos diferentes para não travar em nenhum inimigo."},
+    "egg": {"nome": "Egg Heist", "sub": "PvPvE nas Lost Isles", "desc": "Desmaiar custa amplifier, unit e mochila. Sobrevivência pesa mais que dano: cura, auto-revive e elementos variados para os pilares do Sanctum."}
+  },
+  "fontes": [
+    {"nome": "AniimoTools — Team Composition (pares oficiais)", "url": "https://aniimotools.dev/teams/"},
+    {"nome": "Aniimo Eggs — Team structure e troca", "url": "https://aniimoeggs.com/guides/team-structure-party-swapping-and-combat-roles/"},
+    {"nome": "Imagens: Wiki oficial de Aniimo", "url": "https://wiki.aniimo.com/"}
+  ]
+}

@@ -5,7 +5,7 @@
 <title>Builds · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260926b">
+<link rel="stylesheet" href="assets/style.css?v=20260928">
 </head>
 <body>
 <header class="top" id="top"></header>
@@ -22,7 +22,7 @@
   <div id="list"><div class="loading">Carregando…</div></div>
 </main>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260926b"></script>
+<script src="assets/app.js?v=20260928"></script>
 <script>
 (async () => {
   try {
@@ -39,7 +39,7 @@
 
     const hay = (x) => [x.n, x.b.item.join(" "), x.b.main.join(" "), x.b.kit.map(k => k.n).join(" "), x.b.swap].join(" ").toLowerCase();
     const card = (x) => `<div class="card bcard" id="${esc(x.n)}" style="margin-bottom:14px">
-      <div class="hd"><div class="row"><h3><a href="${A.dexLink(x.n)}" style="color:var(--tx)">${esc(x.n)}</a></h3>${A.chips(x.a.el)} ${A.role(x.a.papel)}</div>
+      <div class="hd"><div class="row"><h3><a href="${A.dexLink(x.n)}" style="color:var(--tx)" class="row">${A.pic(x.n, "lg")}${esc(x.n)}</a></h3>${A.chips(x.a.el)} ${A.role(x.a.papel)}</div>
       <span>${A.tier(x.a.tier.ath,"All Things How")} ${A.tier(x.a.tier.mob,"Mobalytics")}</span></div>
       ${A.buildHTML(x.n, x.b, bd.resson)}</div>`;
     const draw = () => {

@@ -5,13 +5,13 @@
 <title>Eventos · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260926b">
+<link rel="stylesheet" href="assets/style.css?v=20260928">
 </head>
 <body>
 <header class="top" id="top"></header>
 <main id="app"><div class="loading">Carregando…</div></main>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260926b"></script>
+<script src="assets/app.js?v=20260928"></script>
 <script>
 (async () => {
   try {
@@ -29,7 +29,7 @@
       const weak = A.weakTo(a.el, E), res = A.resists(a.el, E);
       const plans = a.cores.map((k, i) => `<h4 style="margin:14px 0 0">${i ? "Plano B" : "Plano A"} — ${A.chip(k)}</h4>${A.teamHTML(k, meta, amap, {flex: i === 0})}`).join("");
       return `<div class="card ${a.ativo ? "hl" : ""}" id="${esc(a.nome)}" style="margin-bottom:14px">
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0;font-size:1.3rem">${esc(a.nome)} ${A.chips(a.el)}</h3>${a.ativo ? `<span class="pill live">na rotação agora</span>` : `<span class="pill">rotação</span>`}</div>
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0;font-size:1.3rem" class="row">${A.pic(a.nome, "lg")}${esc(a.nome)} ${A.chips(a.el)}</h3>${a.ativo ? `<span class="pill live">na rotação agora</span>` : `<span class="pill">rotação</span>`}</div>
         <div class="kv" style="margin-top:12px">
           <b>Leve</b><div class="row">${A.chips(weak)}</div>
           <b>Evite</b><div class="row">${A.chips(res) || "—"}</div>
@@ -46,8 +46,8 @@
     const cal = [...ev.calendario].sort((a,b) => (a.inicio||"0000").localeCompare(b.inicio||"0000"));
     const stTag = (c) => { if (!c.inicio && !c.fim) return `<span class="pill">sempre</span>`; const s = A.status(c); return s==="live" ? `<span class="pill live">ativo</span>` : s==="soon" ? `<span class="pill soon">em breve</span>` : `<span class="pill">encerrado</span>`; };
 
-    const eggTeam = `<div class="team"><div class="slot main"><div class="lab">Main</div><a class="nm" href="${A.dexLink(egg.time.main)}">${esc(egg.time.main)}</a>${A.chips(amap[egg.time.main].el)}<div class="alt">Alt: ${egg.time.alt.map(a => `<a href="${A.dexLink(a)}">${esc(a)}</a>`).join(", ")}</div></div>` +
-      egg.time.supports.map(s => `<div class="slot"><div class="lab">Support</div><a class="nm" href="${A.dexLink(s)}">${esc(s)}</a>${A.chips(amap[s].el)}</div>`).join("") + `</div>`;
+    const eggTeam = `<div class="team"><div class="slot main"><div class="lab">Main</div><a class="nm" href="${A.dexLink(egg.time.main)}">${A.pic(egg.time.main, "md")}${esc(egg.time.main)}</a>${A.chips(amap[egg.time.main].el)}<div class="alt">Alt: ${egg.time.alt.map(a => `<a href="${A.dexLink(a)}">${esc(a)}</a>`).join(", ")}</div></div>` +
+      egg.time.supports.map(s => `<div class="slot"><div class="lab">Support</div><a class="nm" href="${A.dexLink(s)}">${A.pic(s, "md")}${esc(s)}</a>${A.chips(amap[s].el)}</div>`).join("") + `</div>`;
 
     document.getElementById("app").innerHTML = `
       <section class="hero"><div class="kicker">Eventos e modos</div><h1>Eventos</h1>

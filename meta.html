@@ -5,13 +5,13 @@
 <title>Meta · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260926b">
+<link rel="stylesheet" href="assets/style.css?v=20260928">
 </head>
 <body>
 <header class="top" id="top"></header>
 <main id="app"><div class="loading">Carregando…</div></main>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260926b"></script>
+<script src="assets/app.js?v=20260928"></script>
 <script>
 (async () => {
   try {
@@ -36,7 +36,7 @@
         <div class="card"><ul class="tick">${sis.twine.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div></section>
 
       <section id="universais"><h2>Supports universais</h2>
-        <div class="grid g4">${meta.universais.map(u => `<div class="card"><h3><a href="${A.dexLink(u.nome)}">${esc(u.nome)}</a></h3><div class="row" style="margin-bottom:6px">${A.chips(amap[u.nome].el)} ${A.role(amap[u.nome].papel)}</div><p class="muted" style="margin:0;font-size:.9rem">${esc(u.porque)}</p></div>`).join("")}</div></section>
+        <div class="grid g4">${meta.universais.map(u => `<div class="card"><h3><a href="${A.dexLink(u.nome)}" class="row">${A.pic(u.nome, "md")}${esc(u.nome)}</a></h3><div class="row" style="margin-bottom:6px">${A.chips(amap[u.nome].el)} ${A.role(amap[u.nome].papel)}</div><p class="muted" style="margin:0;font-size:.9rem">${esc(u.porque)}</p></div>`).join("")}</div></section>
 
       <section id="times"><h2>Times de endgame por elemento</h2>
         <p class="muted">Escolha o time pelo elemento que o boss toma super efetivo. Cada time traz main, três supports e o Break que serve de tank em raid.</p>

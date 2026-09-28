@@ -5,7 +5,7 @@
 <title>Aniidex · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260926b">
+<link rel="stylesheet" href="assets/style.css?v=20260928">
 </head>
 <body>
 <header class="top" id="top"></header>
@@ -24,7 +24,7 @@
 </main>
 <dialog id="dlg"><div class="dlg" id="dlgc"></div></dialog>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260926b"></script>
+<script src="assets/app.js?v=20260928"></script>
 <script>
 (async () => {
   try {
@@ -41,7 +41,7 @@
 
     const bars = (s) => s ? `<div class="bars">${s.map((v,i) => `<span>${SN[i]}</span><div class="b"><i style="width:${v ? Math.min(100, v/130*100) : 0}%"></i></div><span class="v">${v ?? "—"}</span>`).join("")}</div>` : `<p class="dim" style="font-size:.82rem;margin:0">Stats detalhados não publicados.</p>`;
     const card = (a) => `<div class="card dex" data-n="${esc(a.nome)}" tabindex="0" role="button" aria-label="Abrir ficha de ${esc(a.nome)}">
-      <span class="no">#${esc(a.dex)}</span><h3>${esc(a.nome)}</h3>
+      ${A.pic(a.nome, "lg fr")}<span class="no">#${esc(a.dex)}</span><h3>${esc(a.nome)}</h3>
       <div class="meta">${A.chips(a.el)} ${A.role(a.papel)} ${a.prismana ? `<span class="pill pr">Prismana</span>` : ""} ${!a.final ? `<span class="pill">pré-evolução</span>` : ""}</div>
       <div class="row" style="justify-content:space-between;margin-bottom:8px"><span class="dim" style="font-size:.82rem">Total <b style="color:var(--tx)">${a.total}</b></span><span>${A.tier(a.tier.ath,"All Things How")} ${A.tier(a.tier.mob,"Mobalytics")}</span></div>
       ${bars(a.stats)}</div>`;
@@ -63,7 +63,7 @@
       const weak = A.weakTo(a.el, E), res = A.resists(a.el, E);
       const hits = E.filter(e => a.el.some(x => A.mult(x, e) > 1));
       dc.innerHTML = `<button class="x" aria-label="Fechar">✕</button>
-        <div class="dim" style="font-family:var(--fh)">#${esc(a.dex)}</div>
+        ${A.artUrl(a.nome) ? `<img class="art" src="${A.artUrl(a.nome)}" alt="${esc(a.nome)}" onerror="this.remove()">` : ""}<div class="dim" style="font-family:var(--fh)">#${esc(a.dex)}</div>
         <h2 style="font-size:1.8rem;margin:.1em 0 .3em">${esc(a.nome)}</h2>
         <div class="row" style="margin-bottom:14px">${A.chips(a.el)} ${A.role(a.papel)} ${a.prismana ? `<span class="pill pr">Prismana: ${esc(a.prismana)}</span>` : ""}</div>
         <div class="grid g2" style="gap:16px">

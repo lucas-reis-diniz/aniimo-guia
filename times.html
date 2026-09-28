@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Times · Aniimo Guia de Campo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260928">
+</head>
+<body>
+<header class="top" id="top"></header>
+<main>
+  <section class="hero"><div class="kicker">Team Generator · Team Builder</div><h1>Times</h1>
+    <p class="lead">Escolha um Aniimo, um elemento ou os dois, diga para que é o time e o gerador monta a composição com o motivo de cada escolha. Na aba Montar time você escolhe os 4 e recebe a análise.</p></section>
+  <div class="tabs2" id="tabs"><button data-t="gen" class="on">Gerador</button><button data-t="build">Montar time</button></div>
+  <div id="app"><div class="loading">Carregando…</div></div>
+</main>
+<footer id="foot"></footer>
+<script src="assets/app.js?v=20260928"></script>
+<script>
+(async () => {
+  try {
+    const [dex, bd, meta, sis, tm] = await Promise.all([A.load("aniimo"), A.load("builds"), A.load("meta"), A.load("sistemas"), A.load("times")]);
+    A.setTypes(sis); A.nav(tm.atualizado);
+    const esc = A.esc, E = sis.elementos, amap = A.byName(dex.aniimo), B = bd.builds;
+    const ELRX = new RegExp("(" + E.join("|") + ")", "g");
+    const TEAMRX = /(do time|time inteiro|aliados|pra qualquer main|serve pra qualquer|do grupo|da equipe)/i;
+    const TORD = {"SS":5,"S+":5,"S":4,"A":3,"B":2,"C":1,"D":0};
+    const MODOS = tm.modos;
+
+    /* ---------- base de dados derivada ---------- */
+    const P = dex.aniimo.filter(a => a.final && B[a.nome]).map(a => {
+      const b = B[a.nome];
+      const ts = [a.tier.ath, a.tier.mob].map(t => TORD[t]).filter(v => v != null);
+      const eff = [b.swap, ...b.kit.filter(k => TEAMRX.test(k.ef)).map(k => k.ef)].filter(t => TEAMRX.test(t) || /time|aliados/.test(t));
+      const buffEl = new Set(); let generic = false, heals = a.papel === "Cura", ep = false;
+      eff.forEach(t => {
+        const els = [...new Set((t.match(ELRX) || []))];
+        if (els.length) els.forEach(e => buffEl.add(e)); else generic = true;
+        if (/cura/i.test(t)) heals = true;
+        if (/\bEP\b/.test(t)) ep = true;
+      });
+      return { n: a.nome, a, b, el: a.el, papel: a.papel, tier: ts.length ? Math.max(...ts) : 1.5, buffEl, generic, heals, ep };
+    });
+    const PM = Object.fromEntries(P.map(x => [x.n, x]));
+    const UNI = new Set(meta.universais.map(u => u.nome));
+    UNI.forEach(n => { if (PM[n] && !PM[n].buffEl.size) PM[n].generic = true; });
+    const PAIR = {}; tm.pares.forEach(([x, y, nota]) => { (PAIR[x] = PAIR[x] || {})[y] = nota || true; (PAIR[y] = PAIR[y] || {})[x] = nota || true; });
+    const CORE = {}; Object.entries(meta.cores).forEach(([k, c]) => [c.main, ...c.alt, ...c.supports, ...(c.flex || []), ...(c.tank || [])].forEach(n => (CORE[n] = CORE[n] || new Set()).add(k)));
+    const hitSet = (x) => new Set(E.filter(d => x.el.some(e => A.mult(e, d) > 1)));
+    const isSup = (x) => ["Suporte", "Cura", "Regen"].includes(x.papel);
+    const inter = (s, arr) => arr.filter(v => s.has(v));
+
+    /* ---------- sinergia par a par ---------- */
+    const syn = (x, y) => {
+      if (x.n === y.n) return { s: -99, r: [] };
+      let s = 0; const r = [];
+      if (PAIR[x.n] && PAIR[x.n][y.n]) { s += 4; r.push(["g", "par oficial do jogo"]); }
+      const be = inter(y.buffEl, x.el); if (be.length) { s += 3; r.push(["g", "buffa " + be.join("/")]); }
+      const xb = inter(x.buffEl, y.el); if (xb.length) { s += 1.5; r.push(["", "recebe buff de " + x.n]); }
+      const cores = [...(CORE[x.n] || [])].filter(k => CORE[y.n] && CORE[y.n].has(k)); if (cores.length) { s += 2.5; r.push(["", "time meta " + cores[0]]); }
+      if (y.generic) { s += 1.5; r.push(["", "buff pra qualquer main"]); }
+      if (y.heals) { s += 1.2; r.push(["", "cura"]); }
+      if (y.ep) { s += 0.8; r.push(["", "EP"]); }
+      if (!isSup(x) && isSup(y)) s += 0.8;
+      if (x.papel === "DPS" && y.papel === "Break") { s += 0.8; r.push(["", "quebra postura"]); }
+      const hx = hitSet(x), hy = hitSet(y), cov = [...hy].filter(d => !hx.has(d));
+      if (cov.length) { s += Math.min(1.5, cov.length * 0.35); r.push(["", "cobre " + cov.slice(0, 3).join(", ")]); }
+      s += y.tier * 0.25;
+      return { s, r };
+    };
+
+    /* ---------- geradores ---------- */
+    const pool = (ban) => P.filter(x => !ban.has(x.n));
+    const bestBy = (list, f) => list.map(x => [x, f(x)]).sort((p, q) => q[1] - p[1]);
+    const needHeal = (team) => !team.some(t => t.heals || t.papel === "Cura");
+
+    const pickMain = (anchor, el, mode, ban) => {
+      if (anchor && (!isSup(anchor) || mode === "aberto")) return anchor;
+      if (mode === "egg" && !anchor && !el) { const r = PM[tm.autoRevive[0]]; if (r && !ban.has(r.n)) return r; }
+      if (!anchor && el && meta.cores[el] && PM[meta.cores[el].main] && !ban.has(meta.cores[el].main)) return PM[meta.cores[el].main];
+      let c = pool(ban).filter(x => !isSup(x) && (!el || x.el.includes(el)));
+      if (anchor) c = c.filter(x => x.n !== anchor.n);
+      const r = bestBy(c, x => x.tier * 2 + (x.papel === "DPS" ? 2 : 0) + (anchor ? syn(x, anchor).s : 0) + (mode === "egg" && tm.autoRevive.includes(x.n) ? 3 : 0));
+      return r.length ? r[0][0] : P[0];
+    };
+
+    const genTwine = (anchor, el, mode, ban) => {
+      const main = pickMain(anchor, el, mode, ban);
+      const team = [main]; const why = { [main.n]: mainWhy(main, anchor, el, mode) };
+      if (anchor && anchor.n !== main.n) { team.push(anchor); why[anchor.n] = syn(main, anchor).r; }
+      while (team.length < 4) {
+        const c = pool(ban).filter(x => !team.some(t => t.n === x.n));
+        const r = bestBy(c, y => {
+          let s = syn(main, y).s;
+          if (!isSup(y) && !y.buffEl.size && !y.generic) s -= 2.5;
+          if (el && y.el.includes(el)) s += 1;
+          if (needHeal(team) && (y.heals || y.papel === "Cura")) s += 3;
+          if (!needHeal(team) && (y.heals || y.papel === "Cura")) s -= 1;
+          if (mode === "egg") { s = s * 0.5 + y.tier * 0.3; const els = new Set(team.flatMap(t => t.el)); s += y.el.filter(e => !els.has(e)).length * 2; s -= y.el.filter(e => els.has(e)).length * 1.5; if (["Fogo", "Terra"].some(e => y.el.includes(e)) && ![...els].some(e => e === "Fogo" || e === "Terra")) s += 2; const hc = team.filter(t => t.heals || t.papel === "Cura").length; if ((y.heals || y.papel === "Cura") && hc === 1) s += 2.5; }
+          return s;
+        });
+        if (!r.length) break;
+        team.push(r[0][0]); why[r[0][0].n] = syn(main, r[0][0]).r;
+      }
+      return { team, why, main };
+    };
+
+    const genOpen = (anchor, el, ban) => {
+      let first = anchor || (el ? pickMain(null, el, "aberto", ban) : bestBy(pool(ban).filter(x => x.papel === "DPS"), x => x.tier)[0][0]);
+      const team = [first]; const why = { [first.n]: anchor ? [["g", "escolhido por você"]] : [["", el ? "melhor dano " + el : "melhor dano geral"]] };
+      while (team.length < 4) {
+        const roles = new Set(team.map(t => t.papel)), els = new Set(team.flatMap(t => t.el));
+        const covered = new Set(team.flatMap(t => [...hitSet(t)]));
+        const c = pool(ban).filter(x => !team.some(t => t.n === x.n));
+        const r = bestBy(c, y => {
+          let s = 0;
+          if (y.papel === "DPS" && !roles.has("DPS")) s += 3;
+          if (y.papel === "Break" && !roles.has("Break")) s += 3;
+          if ((y.papel === "Cura" || y.heals) && needHeal(team)) s += 3;
+          if (y.papel === "Suporte" && !roles.has("Suporte")) s += 1.5;
+          if (roles.has(y.papel)) s -= 1.2;
+          s += [...hitSet(y)].filter(d => !covered.has(d)).length * 0.8;
+          if (el) s += y.el.includes(el) ? 4.5 : -1; else s -= y.el.filter(e => els.has(e)).length * 0.9;
+          s += team.reduce((m, t) => m + syn(t, y).s, 0) / team.length * 0.45;
+          s += y.tier * 0.4;
+          const tw = {}; team.forEach(t => A.weakTo(t.el, E).forEach(w => tw[w] = (tw[w] || 0) + 1));
+          s -= A.weakTo(y.el, E).reduce((m, w) => m + (tw[w] || 0) * 0.9, 0);
+          return s;
+        });
+        if (!r.length) break;
+        const y = r[0][0]; team.push(y);
+        const rr = [];
+        if (!roles.has(y.papel)) rr.push(["g", "traz " + y.papel]);
+        const nc = [...hitSet(y)].filter(d => !covered.has(d)); if (nc.length) rr.push(["", "cobre " + nc.slice(0, 3).join(", ")]);
+        team.slice(0, -1).forEach(t => { if (PAIR[t.n] && PAIR[t.n][y.n]) rr.push(["g", "par oficial com " + t.n]); const be = inter(y.buffEl, t.el); if (be.length) rr.push(["", "buffa " + t.n]); });
+        if (y.heals) rr.push(["", "cura"]);
+        why[y.n] = rr.length ? rr : [["", "melhor encaixe restante"]];
+      }
+      return { team, why, main: null };
+    };
+
+    const mainWhy = (m, anchor, el, mode) => {
+      const r = [];
+      if (anchor && anchor.n === m.n) r.push(["g", "escolhido por você"]);
+      else if (anchor) { const s = syn(m, anchor); r.push(["g", "melhor main pra " + anchor.n]); s.r.slice(0, 2).forEach(x => r.push(x)); }
+      if (!anchor && el && meta.cores[el] && meta.cores[el].main === m.n) r.push(["g", "main do time meta " + el]);
+      if (mode === "egg" && tm.autoRevive.includes(m.n)) r.push(["g", "auto-revive"]);
+      r.push(["", "tier " + (m.a.tier.ath || m.a.tier.mob || "—")]);
+      return r;
+    };
+
+    /* ---------- avaliação de um time ---------- */
+    const evalTeam = (team, mode) => {
+      const out = { parts: [], links: [], warns: [] };
+      if (!team.length) return { total: 0, ...out };
+      const roles = new Set(team.map(t => t.papel));
+      const main = mode === "aberto" ? null : team[0];
+      let rs = 0;
+      if (mode === "aberto") { ["DPS", "Break"].forEach(r => { if (roles.has(r)) rs += 30; }); if (!needHeal(team)) rs += 30; if (roles.has("Suporte")) rs += 10; }
+      else { if (main && !isSup(main)) rs += 40; if (!needHeal(team)) rs += 35; if (team.slice(1).some(t => t.buffEl.size || t.generic)) rs += 25; }
+      out.parts.push(["Papéis", Math.min(100, rs)]);
+      const cov = new Set(team.flatMap(t => [...hitSet(t)]));
+      const covS = mode === "aberto" ? Math.round(cov.size / E.length * 100) : (main ? Math.min(100, team.slice(1).filter(t => t.buffEl.has(main.el[0]) || [...t.buffEl].some(e => main.el.includes(e))).length * 40 + (team.slice(1).some(t => t.generic) ? 30 : 0)) : 0);
+      const nEl = new Set(team.flatMap(t => t.el)).size;
+      out.parts.push(mode === "aberto" ? ["Cobertura de elementos", covS] : mode === "egg" ? ["Elementos variados", Math.min(100, Math.round(nEl / 5 * 100))] : ["Buffs pro main", covS]);
+      let ss = 0, n = 0;
+      for (let i = 0; i < team.length; i++) for (let j = 0; j < team.length; j++) if (i !== j && (mode === "aberto" || i === 0)) {
+        const x = team[i], y = team[j];
+        if (PAIR[x.n] && PAIR[x.n][y.n] && i < j) out.links.push(`${x.n} + ${y.n}: par oficial do jogo`);
+        const be = inter(y.buffEl, x.el); if (be.length) out.links.push(`${y.n} buffa ${be.join("/")} (${x.n})`);
+        ss += Math.max(0, syn(x, y).s); n++;
+      }
+      out.parts.push(["Sinergia", Math.min(100, Math.round(n ? ss / n * 10 : 0))]);
+      const weakC = {}; team.forEach(t => A.weakTo(t.el, E).forEach(w => weakC[w] = (weakC[w] || 0) + 1));
+      const shared = Object.entries(weakC).filter(([, c]) => c >= (mode === "aberto" ? 2 : 3));
+      if (mode === "aberto") out.parts.push(["Defesa", Math.max(0, 100 - shared.length * 25)]);
+      if (mode === "aberto") shared.forEach(([w, c]) => out.warns.push(`${c} membros fracos contra ${w}`));
+      else if (main) { const mw = A.weakTo(main.el, E); if (mw.length) out.warns.push(`Só o main apanha: ${main.n} é fraco contra ${mw.join(", ")}. Evite chefes desses elementos ou troque o main.`); }
+      if (needHeal(team)) out.warns.push("Sem cura no time");
+      if (mode !== "aberto" && main && isSup(main)) out.warns.push(`${main.n} é ${main.papel}: no formato Twine o main deveria causar dano`);
+      if (mode === "aberto" && !roles.has("Break")) out.warns.push("Sem Break: vai demorar pra quebrar postura");
+      out.parts.push(["Qualidade", Math.round(team.reduce((m, t) => m + t.tier, 0) / team.length / 5 * 100)]);
+      const w = mode === "aberto" ? [0.25, 0.2, 0.25, 0.15, 0.15] : [0.3, 0.25, 0.3, 0.15];
+      const total = Math.round(out.parts.reduce((m, p, i) => m + p[1] * (w[i] || 0), 0));
+      out.links = [...new Set(out.links)];
+      return { total, ...out };
+    };
+    const grade = (t) => t >= 85 ? "S" : t >= 70 ? "A" : t >= 55 ? "B" : t >= 40 ? "C" : "D";
+
+    /* ---------- render ---------- */
+    const whyL = (r) => r && r.length ? `<div class="why-l">${r.slice(0, 4).map(([c, t]) => `<span class="${c}">${esc(t)}</span>`).join("")}</div>` : "";
+    const slot = (x, lab, r, cls = "", rm = "") => `<div class="tslot ${cls}">${rm}<div class="lab">${lab}</div>${A.pic(x.n, "xl")}<a class="nm" href="${A.dexLink(x.n)}">${esc(x.n)}</a><div class="row" style="justify-content:center;flex-wrap:wrap;gap:4px">${A.chips(x.el)} ${A.role(x.papel)}</div>${r ? `<div class="why">${whyL(r)}</div>` : ""}<div style="margin-top:6px;font-size:.74rem"><a href="builds.html#${encodeURIComponent(x.n)}">build →</a></div></div>`;
+    const evalHTML = (ev) => `<div class="grid g2" style="margin-top:12px;gap:12px">
+      <div class="card"><div class="row" style="justify-content:space-between"><b>Nota do time</b><span class="score">${ev.total} <span style="font-size:1rem">${grade(ev.total)}</span></span></div>
+        ${ev.parts.map(([k, v]) => `<div style="margin-top:8px"><div class="row" style="justify-content:space-between;font-size:.82rem"><span class="muted">${k}</span><b>${v}</b></div><div class="meter"><i style="width:${v}%"></i></div></div>`).join("")}</div>
+      <div class="card">${ev.links.length ? `<p class="dim" style="font-size:.78rem;margin:0 0 .3em">LIGAÇÕES</p><ul class="clean">${ev.links.slice(0, 7).map(l => `<li style="font-size:.88rem">${esc(l)}</li>`).join("")}</ul>` : ""}
+        ${ev.warns.length ? `<p class="dim" style="font-size:.78rem;margin:.8em 0 .3em">ATENÇÃO</p><ul class="clean">${ev.warns.map(w => `<li style="font-size:.88rem;color:var(--warn)">${esc(w)}</li>`).join("")}</ul>` : `<p class="muted" style="font-size:.88rem;margin-top:.6em">Sem pontos fracos óbvios.</p>`}</div></div>`;
+
+    const picker = (id, onPick, opts = {}) => {
+      const box = document.getElementById(id);
+      box.innerHTML = `<div class="bar" style="margin-bottom:8px"><input type="search" placeholder="Buscar Aniimo…" aria-label="Buscar Aniimo"><div class="tg">${E.map(e => `<button data-e="${e}">${e}</button>`).join("")}</div></div><div class="picker"></div>`;
+      const inp = box.querySelector("input"), grid = box.querySelector(".picker"), tg = box.querySelector(".tg"); let fe = null;
+      const draw = () => { const q = inp.value.trim().toLowerCase();
+        grid.innerHTML = P.filter(x => (!q || x.n.toLowerCase().includes(q)) && (!fe || x.el.includes(fe))).sort((p, q2) => p.n.localeCompare(q2.n))
+          .map(x => `<button data-n="${esc(x.n)}" title="${esc(x.n)} · ${esc(x.el.join("/"))} · ${esc(x.papel)}">${A.pic(x.n)}${esc(x.n)}</button>`).join(""); };
+      inp.addEventListener("input", draw);
+      tg.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; fe = fe === b.dataset.e ? null : b.dataset.e; tg.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.e === fe)); draw(); });
+      grid.addEventListener("click", e => { const b = e.target.closest("button"); if (b) onPick(PM[b.dataset.n]); });
+      draw();
+    };
+
+    const app = document.getElementById("app");
+    app.innerHTML = `
+      <div id="pgen">
+        <div class="card" style="margin-bottom:14px">
+          <p class="dim" style="font-size:.78rem;margin:0 0 .4em">1 · PARA QUÊ</p>
+          <div class="tabs2" id="modo">${Object.entries(MODOS).map(([k, m]) => `<button data-m="${k}">${esc(m.nome)} <span class="dim" style="font-weight:500;font-size:.78rem">· ${esc(m.sub)}</span></button>`).join("")}</div>
+          <p class="muted" id="mdesc" style="font-size:.9rem;margin:0"></p>
+          <div class="grid g2" style="margin-top:14px;gap:14px">
+            <div><p class="dim" style="font-size:.78rem;margin:0 0 .4em">2 · COM QUAL ANIIMO <span style="text-transform:none">(opcional)</span></p>
+              <div class="row" id="anc" style="min-height:44px"></div>
+              <details id="ancd" style="margin-top:8px"><summary class="btn" style="display:inline-flex">Escolher Aniimo</summary><div id="pk1" style="margin-top:10px"></div></details></div>
+            <div><p class="dim" style="font-size:.78rem;margin:0 0 .4em">3 · ELEMENTO DO TIME <span style="text-transform:none">(opcional)</span></p>
+              <div class="tg" id="elg"><button data-e="" class="on">Qualquer</button>${E.map(e => `<button data-e="${e}">${e}</button>`).join("")}</div></div>
+          </div>
+        </div>
+        <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><h2 style="margin:0" id="gtitle">Time sugerido</h2><button class="btn" id="again">Gerar outra variação ↻</button></div>
+        <div id="gout" style="margin-top:12px"></div>
+        <div id="gsyn"></div>
+        <div id="gel"></div>
+      </div>
+      <div id="pbuild" hidden>
+        <div class="card" style="margin-bottom:14px">
+          <div class="tabs2" id="bmodo">${Object.entries(MODOS).map(([k, m]) => `<button data-m="${k}">${esc(m.nome)}</button>`).join("")}</div>
+          <p class="muted" style="font-size:.9rem;margin:0" id="bdesc"></p>
+        </div>
+        <div class="tb-grid" id="bslots"></div>
+        <div class="row" style="margin:12px 0;gap:8px;flex-wrap:wrap"><button class="btn" id="bfill">Completar com o gerador</button><button class="btn" id="bclear">Limpar</button><span class="dim" style="font-size:.82rem" id="bhint"></span></div>
+        <div id="beval"></div>
+        <h3 style="margin-top:18px">Escolha os Aniimo</h3>
+        <div id="pk2"></div>
+      </div>
+      <p class="dim" style="font-size:.8rem;margin-top:22px">Como o gerador pensa: pares oficiais de recomendação do jogo, buffs de time lidos do kit de cada Aniimo (${P.filter(x => x.buffEl.size || x.generic).length} têm), times meta desta página, cura, cobertura de elementos pela tabela de tipos e tier das duas tier lists. Retratos: wiki oficial de Aniimo. Fontes: ${tm.fontes.map(f => `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.nome)}</a>`).join(" · ")}.</p>`;
+
+    /* ---------- estado do gerador ---------- */
+    const st = { modo: "evento", anc: null, el: "", ban: [] };
+    try { const h = new URLSearchParams(location.hash.slice(1)); if (MODOS[h.get("modo")]) st.modo = h.get("modo"); if (PM[h.get("a")]) st.anc = PM[h.get("a")]; if (E.includes(h.get("e"))) st.el = h.get("e"); if (h.get("t") === "build") setTab("build"); } catch {}
+    function setTab(t) { document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t === t)); document.getElementById("pgen").hidden = t !== "gen"; document.getElementById("pbuild").hidden = t !== "build"; }
+    document.getElementById("tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (b) setTab(b.dataset.t); });
+
+    const drawGen = () => {
+      const m = MODOS[st.modo];
+      document.querySelectorAll("#modo button").forEach(b => b.classList.toggle("on", b.dataset.m === st.modo));
+      document.querySelectorAll("#elg button").forEach(b => b.classList.toggle("on", b.dataset.e === st.el));
+      document.getElementById("mdesc").textContent = m.desc;
+      document.getElementById("anc").innerHTML = st.anc ? `${A.pic(st.anc.n, "lg")}<div><b style="font-family:var(--fh);font-size:1.1rem">${esc(st.anc.n)}</b><div class="row" style="gap:4px">${A.chips(st.anc.el)} ${A.role(st.anc.papel)}</div></div><button class="btn" id="ancx" style="margin-left:auto">Tirar</button>` : `<span class="muted">Nenhum: o gerador escolhe o main.</span>`;
+      const ax = document.getElementById("ancx"); if (ax) ax.onclick = () => { st.anc = null; st.ban = []; drawGen(); };
+      const ban = new Set(st.ban.filter(n => !st.anc || n !== st.anc.n));
+      const g = st.modo === "aberto" ? genOpen(st.anc, st.el, ban) : genTwine(st.anc, st.el, st.modo, ban);
+      st.last = g.team.map(t => t.n);
+      const labs = st.modo === "aberto" ? ["Membro 1", "Membro 2", "Membro 3", "Membro 4"] : ["Main", "Support", "Support", "Support"];
+      document.getElementById("gtitle").textContent = `Time sugerido · ${m.nome}${st.el ? " · " + st.el : ""}${st.anc ? " · com " + st.anc.n : ""}`;
+      const elT = st.el || (g.main ? g.main.el[0] : "");
+      const tank = st.modo === "evento" ? (elT && meta.cores[elT] && meta.cores[elT].tank.find(t => amap[t] && amap[t].papel === "Break")) || bestBy(P.filter(x => x.papel === "Break" && (!elT || x.el.includes(elT))), x => x.tier)[0]?.[0].n || bestBy(P.filter(x => x.papel === "Break"), x => x.tier)[0]?.[0].n : null;
+      const ev = evalTeam(g.team, st.modo);
+      document.getElementById("gout").innerHTML = `<div class="tb-grid">${g.team.map((x, i) => slot(x, labs[i], g.why[x.n], i === 0 && st.modo !== "aberto" ? "main" : "")).join("")}</div>
+        ${tank ? `<p class="muted" style="font-size:.86rem;margin:.8em 0 0">No Holo-Battle só Aniimo de <b>Break</b> seguram o chefe como tank. Opção para esse time: ${A.pic(tank)} <a href="${A.dexLink(tank)}">${esc(tank)}</a>.</p>` : ""}
+        ${evalHTML(ev)}
+        <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap"><button class="btn" id="toB">Editar no Montar time</button><button class="btn" id="share">Copiar link deste time</button></div>`;
+      document.getElementById("toB").onclick = () => { bst.modo = st.modo; bst.slots = g.team.map(t => t.n); drawB(); setTab("build"); window.scrollTo({top: 0, behavior: "smooth"}); };
+      document.getElementById("share").onclick = (e) => { const u = location.href.split("#")[0] + "#" + new URLSearchParams({modo: st.modo, ...(st.anc ? {a: st.anc.n} : {}), ...(st.el ? {e: st.el} : {})}); try { navigator.clipboard.writeText(u); e.target.textContent = "Link copiado"; } catch { prompt("Link:", u); } };
+
+      // sinergias do Aniimo escolhido
+      const gs = document.getElementById("gsyn");
+      if (st.anc) {
+        const x = st.anc;
+        const list = bestBy(P.filter(y => y.n !== x.n), y => syn(x, y).s).slice(0, 12);
+        const wk = A.weakTo(x.el, E);
+        gs.innerHTML = `<section style="margin-top:24px"><h2 class="row">${A.pic(x.n, "md")}Sinergias com ${esc(x.n)}</h2>
+          <p class="muted">Fraco contra ${A.chips(wk) || "—"}. ${PAIR[x.n] ? `Par oficial do jogo: <b>${Object.keys(PAIR[x.n]).map(esc).join(", ")}</b>.` : ""} ${x.buffEl.size ? `Buffa o time de ${[...x.buffEl].join("/")}.` : ""}</p>
+          <div class="syn">${list.map(([y, s]) => { const r = syn(x, y); return `<div class="it">${A.pic(y.n, "lg")}<div style="min-width:0"><div class="row" style="gap:6px;flex-wrap:wrap"><b><a href="#" data-anc="${esc(y.n)}" title="Gerar time com ${esc(y.n)}" style="color:var(--tx)">${esc(y.n)}</a></b>${A.chips(y.el)}</div><div class="dim" style="font-size:.74rem">${esc(y.papel)} · afinidade ${s.toFixed(1)}</div>${whyL(r.r)}</div></div>`; }).join("")}</div></section>`;
+      } else gs.innerHTML = "";
+
+      // painel do elemento
+      const ge = document.getElementById("gel");
+      if (st.el) {
+        const el = st.el, of = P.filter(x => x.el.includes(el)), bufs = P.filter(x => x.buffEl.has(el));
+        const byRole = ["DPS", "Break", "Suporte", "Cura", "Regen"].map(r => [r, of.filter(x => x.papel === r).sort((p, q) => q.tier - p.tier)]).filter(([, l]) => l.length);
+        ge.innerHTML = `<section style="margin-top:24px"><h2>Time de ${A.chip(el)}</h2>
+          ${meta.cores[el] ? `<div class="card hl" style="margin-bottom:12px"><h3>Time meta (curado)</h3>${A.teamHTML(el, meta, amap)}</div>` : ""}
+          ${bufs.length ? `<p class="muted">Quem buffa ${el}: ${bufs.map(b => `${A.pic(b.n)} <a href="#" data-anc="${esc(b.n)}">${esc(b.n)}</a>`).join(" · ")}</p>` : ""}
+          <div class="grid g2" style="gap:10px">${byRole.map(([r, l]) => `<div class="card"><h3 style="font-size:1rem">${A.role(r)}</h3><div class="row" style="flex-wrap:wrap;gap:10px">${l.map(x => `<a href="#" data-anc="${esc(x.n)}" class="row" style="gap:6px">${A.pic(x.n, "md")}${esc(x.n)}</a>`).join("")}</div></div>`).join("")}</div></section>`;
+      } else ge.innerHTML = "";
+    };
+    document.getElementById("modo").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { st.modo = b.dataset.m; st.ban = []; drawGen(); } });
+    document.getElementById("elg").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { st.el = b.dataset.e; st.ban = []; drawGen(); } });
+    document.getElementById("again").addEventListener("click", () => { const keep = st.anc ? st.anc.n : null; const cand = (st.last || []).filter(n => n !== keep); if (cand.length) st.ban.push(cand[st.ban.length % cand.length]); if (st.ban.length > 8) st.ban = st.ban.slice(-8); drawGen(); });
+    document.getElementById("pgen").addEventListener("click", e => { const a = e.target.closest("[data-anc]"); if (!a) return; e.preventDefault(); st.anc = PM[a.dataset.anc]; st.ban = []; drawGen(); window.scrollTo({top: 0, behavior: "smooth"}); });
+    picker("pk1", (x) => { st.anc = x; st.ban = []; document.getElementById("ancd").open = false; drawGen(); });
+
+    /* ---------- Team Builder manual ---------- */
+    const bst = { modo: "evento", slots: [] };
+    const drawB = () => {
+      const m = MODOS[bst.modo];
+      document.querySelectorAll("#bmodo button").forEach(b => b.classList.toggle("on", b.dataset.m === bst.modo));
+      document.getElementById("bdesc").textContent = m.desc;
+      const labs = bst.modo === "aberto" ? ["Membro 1", "Membro 2", "Membro 3", "Membro 4"] : ["Main", "Support", "Support", "Support"];
+      const team = bst.slots.map(n => PM[n]);
+      document.getElementById("bslots").innerHTML = [0, 1, 2, 3].map(i => team[i] ? slot(team[i], labs[i], null, i === 0 && bst.modo !== "aberto" ? "main" : "", `<button class="rm" data-rm="${i}" aria-label="Tirar">✕</button>`) : `<div class="tslot empty"><div><div class="lab">${labs[i]}</div>vazio</div></div>`).join("");
+      document.getElementById("bhint").textContent = team.length < 4 ? "Clique num Aniimo abaixo para adicionar." : "Time completo. Tire um para trocar.";
+      document.getElementById("beval").innerHTML = team.length ? evalHTML(evalTeam(team, bst.modo)) : "";
+    };
+    document.getElementById("bmodo").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { bst.modo = b.dataset.m; drawB(); } });
+    document.getElementById("bslots").addEventListener("click", e => { const b = e.target.closest("[data-rm]"); if (b) { bst.slots.splice(+b.dataset.rm, 1); drawB(); } });
+    document.getElementById("bclear").onclick = () => { bst.slots = []; drawB(); };
+    document.getElementById("bfill").onclick = () => {
+      if (bst.slots.length >= 4) return;
+      const cur = bst.slots.map(n => PM[n]);
+      let team = cur.slice();
+      while (team.length < 4) {
+        const c = P.filter(x => !team.some(t => t.n === x.n));
+        const r = bestBy(c, y => {
+          if (bst.modo === "aberto") { return team.reduce((m, t) => m + syn(t, y).s, 0) + (new Set(team.map(t => t.papel)).has(y.papel) ? -1.5 : 1.5) + (needHeal(team) && (y.heals || y.papel === "Cura") ? 3 : 0); }
+          const main = team[0]; if (!main) return y.tier * 2 + (isSup(y) ? -5 : 2);
+          return syn(main, y).s + (needHeal(team) && (y.heals || y.papel === "Cura") ? 3 : 0) + (!isSup(y) && !y.buffEl.size && !y.generic ? -2.5 : 0);
+        });
+        team.push(r[0][0]);
+      }
+      bst.slots = team.map(t => t.n); drawB();
+    };
+    picker("pk2", (x) => { if (bst.slots.includes(x.n) || bst.slots.length >= 4) return; bst.slots.push(x.n); drawB(); });
+
+    drawGen(); drawB();
+  } catch (e) { A.fail(e); }
+})();
+</script>
+</body>
+</html>

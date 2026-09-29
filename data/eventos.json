@@ -5,8 +5,15 @@
   "temporada": "Season 3",
   "inicio": "2026-09-24",
   "fim": "2026-12-06",
+  "fim_nota": "Fontes divergem sobre o fim da Season 3: 06/12 (Wikily) ou 25/10 (AniimoGuide).",
   "janela": "Semanal: quinta 04:00 até segunda 03:59 (horário do servidor)",
   "requisito": "Trailblazer I",
+  "ciclos": [
+   {"de": "2026-09-24", "ate": "2026-09-28", "alphas": ["Alpha Irisal", "Alpha Tubster", "Alpha Bouldus"], "lucky": "Fulmintis"},
+   {"de": "2026-10-01", "ate": "2026-10-05", "alphas": ["Alpha Scorchhowl", "Alpha Minespine", "Alpha Luminelle"], "lucky": "Irisalis"},
+   {"de": "2026-10-08", "ate": "2026-10-12", "alphas": ["Alpha Blazen", "Omega Sherro", "Alpha Grizbo"], "lucky": "Fulmintis"}
+  ],
+  "ciclos_nota": "Depois do terceiro ciclo as fontes indicam Alpha Irisal com Alpha Panpanta e depois Omega Sherro com Alpha Tuckin, ainda sem data.",
   "formato": [
    "Squad de 4 jogadores, ou você com 3 IAs. Cada jogador leva 1 main + 3 supports (formato Twine).",
    "Três lanes simultâneas, uma Alpha por lane. Cada lane guarda seu melhor rank de estrelas separadamente; a soma das três libera os marcos.",
@@ -27,18 +34,20 @@
    {"nome": "BREAK Pursuit", "efeito": "Skills durante o BREAK acumulam combo. Ao fim do BREAK, dano bônus = combo × 300% do ATK do Aniimo ativo.", "como": "Spam das skills MAIS BARATAS na janela e deixe o maior ATK ativo quando o BREAK acabar. Pawney (+30% em alvos em BREAK) e Irisalis (skills baratas) são os melhores."}
   ],
   "alphas": [
-   {"nome": "Alpha Irisal", "el": ["Grama"], "ativo": true, "cores": ["Sombrio", "Fogo"], "tank": "Inferlupa", "nota": "Inferlupa (Fogo/Sombrio) acerta super efetivo com os dois elementos. Pawney e Infergon são os mains."},
-   {"nome": "Alpha Tubster", "el": ["Vento"], "ativo": true, "cores": ["Elétrico", "Luz"], "tank": "Blazen", "nota": "Lane perfeita para o Volt Surge. Lunara e Helion acertam 1,6× aqui."},
-   {"nome": "Alpha Bouldus", "el": ["Terra"], "ativo": true, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Irisalis é a resposta. Evite Fogo, Elétrico, Gelo e Terra, todos resistidos."},
-   {"nome": "Alpha Minespine", "el": ["Terra"], "ativo": false, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Mesmo plano do Bouldus."},
+   {"nome": "Alpha Irisal", "el": ["Grama"], "ativo": false, "cores": ["Sombrio", "Fogo"], "tank": "Inferlupa", "nota": "Inferlupa (Fogo/Sombrio) acerta super efetivo com os dois elementos. Pawney e Infergon são os mains."},
+   {"nome": "Alpha Tubster", "el": ["Vento"], "ativo": false, "cores": ["Elétrico", "Luz"], "tank": "Blazen", "nota": "Lane perfeita para o Volt Surge. Lunara e Helion acertam 1,6× aqui."},
+   {"nome": "Alpha Bouldus", "el": ["Terra"], "ativo": false, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Irisalis é a resposta. Evite Fogo, Elétrico, Gelo e Terra, todos resistidos."},
+   {"nome": "Alpha Minespine", "el": ["Terra"], "ativo": true, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Mesmo plano do Bouldus."},
    {"nome": "Alpha Grizbo", "el": ["Terra"], "ativo": false, "cores": ["Grama", "Água"], "tank": "Panpanta", "nota": "Mesmo plano do Bouldus."},
-   {"nome": "Alpha Luminelle", "el": ["Elétrico"], "ativo": false, "cores": ["Sombrio", "Gelo"], "tank": "Rookey", "nota": "Starters são resistidos aqui (Luz). Reaproveite o time Sombrio do Irisal."},
+   {"nome": "Alpha Luminelle", "el": ["Elétrico"], "ativo": true, "cores": ["Sombrio", "Gelo"], "tank": "Rookey", "nota": "Starters são resistidos aqui (Luz). Reaproveite o time Sombrio do Irisal."},
    {"nome": "Alpha Blazen", "el": ["Elétrico"], "ativo": false, "cores": ["Sombrio", "Gelo"], "tank": "Rookey", "nota": "Mesmo plano da Alpha Luminelle."},
-   {"nome": "Alpha Scorchhowl", "el": ["Fogo"], "ativo": false, "cores": ["Terra", "Água"], "tank": "Minespine", "nota": "Grizbo é o main mais direto."},
-   {"nome": "Omega Sherro", "el": ["Água"], "ativo": false, "cores": ["Elétrico", "Grama"], "tank": "Blazen", "nota": "Fraco a três elementos. Reaproveite Elétrico ou Grama."}
+   {"nome": "Alpha Scorchhowl", "el": ["Fogo"], "ativo": true, "cores": ["Terra", "Água"], "tank": "Minespine", "nota": "Grizbo é o main mais direto."},
+   {"nome": "Omega Sherro", "el": ["Água"], "ativo": false, "cores": ["Elétrico", "Grama"], "tank": "Blazen", "nota": "Fraco a três elementos. Reaproveite Elétrico ou Grama."},
+   {"nome": "Alpha Panpanta", "el": ["Água"], "ativo": false, "cores": ["Elétrico", "Grama"], "tank": "Blazen", "nota": "Fraco a Grama, Gelo e Elétrico. Mesmo plano do Omega Sherro; evite Fogo, Água, Terra e Sombrio (resistidos)."},
+   {"nome": "Alpha Tuckin", "el": ["Grama"], "ativo": false, "cores": ["Sombrio", "Fogo"], "tank": "Inferlupa", "nota": "Mesmo plano do Alpha Irisal: fraco a Fogo, Vento e Sombrio."}
   ],
-  "fora_rotacao": ["Alpha Geoclaw (Gelo)", "Alpha Panpanta (Água)", "Alpha Tuckin (Grama)"],
-  "fonte_nota": "A fonte lista cada Alpha com 'counters X'. Cruzando com a tabela de tipos, X são exatamente os elementos super efetivos contra o Alpha em 9 de 9 casos, ou seja: leve X."
+  "fora_rotacao": ["Alpha Geoclaw (Gelo)"],
+  "fonte_nota": "A fonte lista cada Alpha com 'counters X'. Cruzando com a tabela de tipos, X são exatamente os elementos super efetivos contra o Alpha em todos os casos, ou seja: leve X."
  },
  "eggheist": {
   "nome": "Operation: Egg Heist",
@@ -74,7 +83,7 @@
   ]
  },
  "calendario": [
-  {"nome": "Holo-Battle Interlink — Season 3", "tipo": "Semanal", "inicio": "2026-09-24", "fim": "2026-12-06", "nota": "Quinta a segunda. Alphas ativos: Irisal, Tubster, Bouldus.", "link": "eventos.html#holo"},
+  {"nome": "Holo-Battle Interlink — Season 3", "tipo": "Semanal", "inicio": "2026-09-24", "fim": "2026-12-06", "nota": "Quinta a segunda. 24–28/09: Irisal, Tubster, Bouldus. 01–05/10: Scorchhowl, Minespine, Luminelle (Lucky: Irisalis). 08–12/10: Blazen, Omega Sherro, Grizbo.", "link": "eventos.html#holo"},
   {"nome": "Egg Heist — Chaos Mode", "tipo": "Modo", "inicio": "2026-09-24", "fim": null, "nota": "Dificuldade máxima, mais ovos Prismana. Exige Elite Egg Seeker IV.", "link": "eventos.html#egg"},
   {"nome": "Operation: Egg Heist", "tipo": "Contínuo", "inicio": "2026-09-19", "fim": null, "nota": "Modo PvPvE permanente.", "link": "eventos.html#egg"},
   {"nome": "Legendary Journey — estágio Irisalis", "tipo": "História", "inicio": "2026-09-25", "fim": "2026-12-09", "nota": "Junte Irisalis Petals (limite semanal) para o Aniipod lendário: captura garantida, Potential Perfect e Sparkling.", "link": "aniidex.html#Irisalis"},
@@ -100,7 +109,7 @@
   {"nome": "Holo-Battle Sim", "tipo": "Permanente", "inicio": null, "fim": null, "nota": "Solo roguelike. Libera no nível 45.", "link": "eventos.html#sim"}
  ],
  "changelog": [
-  {"data": "2026-09-28", "itens": ["Nova página Times: Team Generator (time por Aniimo, por modo — evento, mundo aberto, Egg Heist — e por elemento) e Team Builder com nota, ligações e alertas.", "Sinergias de cada Aniimo: pares oficiais do jogo, quem buffa o elemento dele e quem cobre as fraquezas.", "Retratos oficiais dos Aniimo no site inteiro (Aniidex, Builds, Eventos, Meta e times)."]},
+  {"data": "2026-09-28", "itens": ["Nova página Times: Team Generator (time por Aniimo, por modo — evento, mundo aberto, Egg Heist — e por elemento) e Team Builder com nota, ligações e alertas.", "Sinergias de cada Aniimo: pares oficiais do jogo, quem buffa o elemento dele e quem cobre as fraquezas.", "Retratos oficiais dos Aniimo no site inteiro (Aniidex, Builds, Eventos, Meta e times).", "Holo-Battle: rotação de 01–05/10 (Scorchhowl, Minespine, Luminelle; Lucky Aniimo Irisalis) marcada como ativa, calendário dos 3 ciclos conhecidos com Lucky Aniimo, e planos novos para Alpha Panpanta e Alpha Tuckin.", "Atualização automática passou para todo domingo às 05:01."]},
   {"data": "2026-09-26", "itens": [
    "Nova página Builds: 52 formas finais com skills como main e por situação, skill de entrada como support, held item, ordem de Capability Awakening, personalidade e prioridade de Star-Up.",
    "Build também aparece na ficha de cada Aniimo no Aniidex, com o kit completo de skills.",

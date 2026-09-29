@@ -18,9 +18,11 @@ Guia pessoal de Aniimo publicado no GitHub Pages: eventos da semana com times po
 
 ## Como atualizar
 
+Atualização automática: todo domingo às 05:01 (horário de Brasília).
+
 Quase toda atualização é só editar JSON em `data/`:
 
-- **Nova semana do Holo-Battle:** em `data/eventos.json` → `holo.alphas`, marque `"ativo": true` nos Alphas da rotação atual. As fraquezas são calculadas automaticamente pela tabela de tipos; `cores` aponta para os times em `data/meta.json`.
+- **Nova semana do Holo-Battle:** em `data/eventos.json` → `holo.ciclos`, adicione o ciclo (`de`, `ate`, `alphas`, `lucky`). O site escolhe sozinho o ciclo atual ou o próximo pela data; `"ativo"` em `holo.alphas` só vale quando não há ciclo cadastrado. As fraquezas são calculadas automaticamente pela tabela de tipos; `cores` aponta para os times em `data/meta.json`.
 - **Evento novo:** adicione um item em `data/eventos.json` → `calendario` (datas em `AAAA-MM-DD`). O início mostra sozinho o que está ativo e o que começa nos próximos 14 dias.
 - **Modo novo:** crie um bloco novo em `data/eventos.json` e uma seção em `eventos.html`.
 - **Aniimo novo ou balanceamento:** `data/aniimo.json`. `stats` segue a ordem HP, ATK, P.DEF, REGEN, M.DEF, BREAK (`null` = não publicado).

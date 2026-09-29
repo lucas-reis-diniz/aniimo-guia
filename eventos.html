@@ -5,19 +5,20 @@
 <title>Eventos · Aniimo Guia de Campo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20260928">
+<link rel="stylesheet" href="assets/style.css?v=20260928b">
 </head>
 <body>
 <header class="top" id="top"></header>
 <main id="app"><div class="loading">Carregando…</div></main>
 <footer id="foot"></footer>
-<script src="assets/app.js?v=20260928"></script>
+<script src="assets/app.js?v=20260928b"></script>
 <script>
 (async () => {
   try {
     const [ev, meta, dex, sis] = await Promise.all([A.load("eventos"), A.load("meta"), A.load("aniimo"), A.load("sistemas")]);
     A.setTypes(sis); A.nav(ev.atualizado);
     const amap = A.byName(dex.aniimo), E = sis.elementos, esc = A.esc, H = ev.holo;
+    const cyc = A.ciclo(H);
 
     const starter = (els) => {
       const m = A.multVs("Luz", els);
@@ -28,8 +29,8 @@
     const alphaCard = (a) => {
       const weak = A.weakTo(a.el, E), res = A.resists(a.el, E);
       const plans = a.cores.map((k, i) => `<h4 style="margin:14px 0 0">${i ? "Plano B" : "Plano A"} — ${A.chip(k)}</h4>${A.teamHTML(k, meta, amap, {flex: i === 0})}`).join("");
-      return `<div class="card ${a.ativo ? "hl" : ""}" id="${esc(a.nome)}" style="margin-bottom:14px">
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0;font-size:1.3rem" class="row">${A.pic(a.nome, "lg")}${esc(a.nome)} ${A.chips(a.el)}</h3>${a.ativo ? `<span class="pill live">na rotação agora</span>` : `<span class="pill">rotação</span>`}</div>
+      return `<div class="card ${a.on ? "hl" : ""}" id="${esc(a.nome)}" style="margin-bottom:14px">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0;font-size:1.3rem" class="row">${A.pic(a.nome, "lg")}${esc(a.nome)} ${A.chips(a.el)}</h3>${a.on ? (cyc && cyc.soon ? `<span class="pill soon">próxima rotação</span>` : `<span class="pill live">na rotação agora</span>`) : `<span class="pill">rotação</span>`}</div>
         <div class="kv" style="margin-top:12px">
           <b>Leve</b><div class="row">${A.chips(weak)}</div>
           <b>Evite</b><div class="row">${A.chips(res) || "—"}</div>
@@ -41,7 +42,7 @@
       </div>`;
     };
 
-    const active = H.alphas.filter(a => a.ativo), rot = H.alphas.filter(a => !a.ativo);
+    const act = new Set(cyc && cyc.alphas.length ? cyc.alphas.map(a => a.nome) : H.alphas.filter(a => a.ativo).map(a => a.nome)); H.alphas.forEach(a => a.on = act.has(a.nome)); const active = cyc && cyc.alphas.length ? cyc.alphas : H.alphas.filter(a => a.on), rot = H.alphas.filter(a => !a.on);
     const egg = ev.eggheist, sim = ev.sim;
     const cal = [...ev.calendario].sort((a,b) => (a.inicio||"0000").localeCompare(b.inicio||"0000"));
     const stTag = (c) => { if (!c.inicio && !c.fim) return `<span class="pill">sempre</span>`; const s = A.status(c); return s==="live" ? `<span class="pill live">ativo</span>` : s==="soon" ? `<span class="pill soon">em breve</span>` : `<span class="pill">encerrado</span>`; };
@@ -57,6 +58,7 @@
       <section id="holo">
         <h2>${esc(H.nome)} · ${esc(H.temporada)}</h2>
         <p class="muted">${A.fmtD(H.inicio)} – ${A.fmtD(H.fim)} · ${esc(H.janela)} · Requisito: ${esc(H.requisito)}</p>
+        ${H.fim_nota ? `<p class="dim" style="font-size:.84rem;margin-top:-6px">${esc(H.fim_nota)}</p>` : ""}
         <div class="grid g2">
           <div class="card"><h3>Como funciona</h3><ul class="tick">${H.formato.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>
           <div class="card"><h3>Regras de ouro</h3><ul class="tick">${H.regras_ouro.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>
@@ -65,7 +67,10 @@
         <div class="grid g2">${H.modificadores.map(m => `<div class="card"><h3>${esc(m.nome)}</h3><p>${esc(m.efeito)}</p><p class="muted" style="margin:0"><b style="color:var(--acc)">Como usar:</b> ${esc(m.como)}</p></div>`).join("")}</div>
         <div class="note ok" style="margin-top:14px"><b>O que decide a lane:</b> BREAK Pursuit paga combo × 300% do ATK do Aniimo <i>ativo</i>. Dentro da janela, spamme as skills mais baratas; quando o BREAK acabar, o maior ATK precisa estar em campo.</div>
 
-        <h3 style="margin-top:28px">Alphas na rotação agora</h3>
+        ${H.ciclos ? `<h3 style="margin-top:28px">Calendário de rotações</h3>
+        <div class="tw"><table><thead><tr><th>Ciclo</th><th>Alphas</th><th>Lucky Aniimo</th></tr></thead><tbody>${H.ciclos.map(c => { const cur = cyc && cyc.de === c.de; return `<tr${cur ? ' style="background:rgba(124,240,208,.07)"' : ""}><td><b>${A.fmtD(c.de)} – ${A.fmtD(c.ate)}</b>${cur ? ` <span class="pill ${cyc.soon ? "soon" : "live"}">${cyc.soon ? "próxima" : "agora"}</span>` : A.parse(c.ate) < A.today() ? ' <span class="dim">encerrado</span>' : ""}</td><td><div class="row" style="flex-wrap:wrap;gap:10px">${c.alphas.map(n => `<a href="#${encodeURIComponent(n)}" class="row" style="gap:6px">${A.pic(n)}${esc(n)}</a>`).join("")}</div></td><td><span class="row" style="gap:6px">${A.pic(c.lucky)}${esc(c.lucky)}</span></td></tr>`; }).join("")}</tbody></table></div>
+        ${H.ciclos_nota ? `<p class="dim" style="font-size:.84rem">${esc(H.ciclos_nota)}</p>` : ""}` : ""}
+        <h3 style="margin-top:28px">${cyc ? (cyc.soon ? `Alphas da próxima rotação (${A.fmtD(cyc.de)} – ${A.fmtD(cyc.ate)})` : `Alphas na rotação agora (até ${A.fmtD(cyc.ate)})`) : "Alphas na rotação agora"}</h3>
         ${active.map(alphaCard).join("")}
         <h3 style="margin-top:28px">Resto da rotação (prontos para quando entrarem)</h3>
         ${rot.map(alphaCard).join("")}

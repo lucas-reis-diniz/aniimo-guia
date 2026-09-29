@@ -1,6 +1,6 @@
 /* Aniimo — Guia de Campo · utilitários compartilhados */
 const A = (() => {
-  const V = "20260928";
+  const V = "20260928b";
   const cache = {};
   const load = (n) => cache[n] || (cache[n] = fetch(`data/${n}.json?v=${V}`).then(r => {
     if (!r.ok) throw new Error(`Falha ao carregar ${n}`); return r.json();
@@ -50,7 +50,7 @@ const A = (() => {
     const el = document.getElementById("top");
     if (el) el.innerHTML = `<div class="in"><a class="brand" href="index.html"><span class="dot"></span>Aniimo · Guia de Campo</a><nav class="nav">${links}</nav><span class="upd">${upd ? "Atualizado em " + fmtD(upd) : ""}</span></div>`;
     const ft = document.getElementById("foot");
-    if (ft) ft.innerHTML = `<div class="in">Guia pessoal mantido com pesquisa semanal (toda quinta). Dados de fontes da comunidade — veja <a href="eventos.html#fontes">fontes</a>. Aniimo é propriedade dos seus respectivos donos; este site não é oficial.</div>`;
+    if (ft) ft.innerHTML = `<div class="in">Guia pessoal mantido com pesquisa semanal (todo domingo). Dados de fontes da comunidade — veja <a href="eventos.html#fontes">fontes</a>. Aniimo é propriedade dos seus respectivos donos; este site não é oficial.</div>`;
   };
 
   /* ---- time ---- */
@@ -93,8 +93,9 @@ const A = (() => {
     </div>`;
   };
 
+  const ciclo = (H) => { const t = today(); const c = (H.ciclos || []).find(c => parse(c.ate) > t); if (!c) return null; const soon = parse(c.de) > t; const alphas = c.alphas.map(n => (H.alphas || []).find(a => a.nome === n)).filter(Boolean); return { ...c, soon, alphas, label: `${soon ? "Próxima rotação" : "Rotação desta semana"} · ${fmtD(c.de)} – ${fmtD(c.ate)}` }; };
   const byName = (list) => Object.fromEntries(list.map(a => [a.nome, a]));
   const fail = (e, id = "app") => { const el = document.getElementById(id); if (el) el.innerHTML = `<div class="note">Não consegui carregar os dados (${esc(e.message)}). Recarregue a página.</div>`; console.error(e); };
 
-  return { load, pic, picUrl, artUrl, esc, chip, chips, role, tier, dexLink, fmtD, status, parse, today, setTypes, mult, multVs, weakTo, resists, nav, teamHTML, buildHTML, byName, fail };
+  return { load, pic, picUrl, artUrl, esc, chip, chips, role, tier, dexLink, fmtD, status, parse, today, setTypes, mult, multVs, weakTo, resists, nav, teamHTML, buildHTML, byName, fail, ciclo };
 })();

@@ -1,6 +1,6 @@
 /* Aniimo — Guia de Campo · utilitários compartilhados */
 const A = (() => {
-  const V = "20260928b";
+  const V = "20261025";
   const cache = {};
   const load = (n) => cache[n] || (cache[n] = fetch(`data/${n}.json?v=${V}`).then(r => {
     if (!r.ok) throw new Error(`Falha ao carregar ${n}`); return r.json();
@@ -8,7 +8,7 @@ const A = (() => {
 
   /* ---- imagens oficiais (CDN da wiki oficial) ---- */
   const PIC = {}, CDN = "https://worldx-website-cdn.aniimo.com/official-website/worldx/wiki_stage/init/";
-  const pid = (nome) => PIC[String(nome || "").replace(/^(Alpha|Omega) /, "")];
+  const pid = (nome) => PIC[String(nome || "").replace(/^(Alpha|Omega) /, "").replace(/ \(.*\)$/, "")];
   const picUrl = (nome) => pid(nome) ? `${CDN}Wiki_PetHead_${pid(nome)}.png` : "";
   const artUrl = (nome) => pid(nome) ? `${CDN}Wiki_Aniimo_${pid(nome)}.png` : "";
   const pic = (nome, cls = "") => pid(nome) ? `<img class="pic ${cls}" src="${picUrl(nome)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : "";
